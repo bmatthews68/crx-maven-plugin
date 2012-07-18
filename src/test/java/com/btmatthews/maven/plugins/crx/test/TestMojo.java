@@ -6,6 +6,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
 import java.io.File;
+import java.security.Security;
 
 import com.btmatthews.maven.plugins.crx.CRXMojo;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
@@ -29,6 +30,7 @@ public class TestMojo extends AbstractMojoTestCase {
     private MavenProjectHelper projectHelper;
 
     protected void setUp() throws Exception {
+        Security.addProvider(new org.bouncycastle.jce.provider.BouncyCastleProvider());
         mojo = new CRXMojo();
         project = mock(MavenProject.class);
         projectHelper = mock(MavenProjectHelper.class);

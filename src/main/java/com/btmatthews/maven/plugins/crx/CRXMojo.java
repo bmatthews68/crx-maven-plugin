@@ -195,7 +195,7 @@ public class CRXMojo extends AbstractMojo {
      */
     private byte[] sign(final byte[] data, final KeyPair keyPair) throws MojoExecutionException {
         try {
-            final Signature signatureObject = Signature.getInstance("SHA256WithRSAEncryption");
+            final Signature signatureObject = Signature.getInstance("SHA1withRSA");
             signatureObject.initSign(keyPair.getPrivate());
             signatureObject.update(data);
             return signatureObject.sign();
