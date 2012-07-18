@@ -1,8 +1,25 @@
+/*
+ * Copyright 2012 Brian Matthews
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
 package com.btmatthews.maven.plugins.crx;
 
 import java.io.*;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
+import java.security.Security;
 import java.security.Signature;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
@@ -16,10 +33,14 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.bouncycastle.openssl.PEMReader;
 import org.bouncycastle.openssl.PasswordFinder;
 
 /**
+ * Implement the crx goal for the plug-in. The crx goal packages and signs a Chrome Browser Extension producing a file
+ * with a .crx extension.
+ *
  * @author <a href="mailto:brian@btmatthews.com">Brian Matthews</a>
  * @since 1.0.0
  */
@@ -108,6 +129,11 @@ public class CRXMojo extends AbstractMojo {
         if (!manifestFile.exists()) {
             throw new MojoExecutionException("Missing manifest.json file");
         }
+
+        // Add the Bouncy Castle security provider
+
+        Security.addProvider(new BouncyCastleProvider());
+
         // ZIP the CRX source directory tree
 
         final byte[] zipData = createZipFile();
@@ -127,8 +153,9 @@ public class CRXMojo extends AbstractMojo {
         // Generate the CRX file
 
         final File crxFile = new File(outputDirectory, crxFilename.toString());
-
         outputCRX(crxFile, zipData, signature, publicKey);
+
+        // Attach the artifact to the build life-cycle
 
         if (classifier != null) {
             projectHelper.attachArtifact(project, "crx", classifier, crxFile);
