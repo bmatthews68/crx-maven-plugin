@@ -82,7 +82,7 @@ public class CRXMojo extends AbstractMojo {
      * The Maven project helper.
      */
     @Component
-    private MavenProjectHelper mavenProjectHelper;
+    private MavenProjectHelper projectHelper;
 
     /**
      * The default constructor.
@@ -131,7 +131,7 @@ public class CRXMojo extends AbstractMojo {
         outputCRX(crxFile, zipData, signature, publicKey);
 
         if (classifier != null) {
-            mavenProjectHelper.attachArtifact(project, "crx", classifier, crxFile);
+            projectHelper.attachArtifact(project, "crx", classifier, crxFile);
         } else {
             project.setFile(crxFile);
         }
@@ -253,7 +253,7 @@ public class CRXMojo extends AbstractMojo {
             } else {
                 final FileInputStream itemInput = new FileInputStream(itemFile);
                 try {
-                    final String itemPath = itemFile.toURI().relativize(crxSourceDirectory.toURI()).getPath();
+                    final String itemPath = crxSourceDirectory.toURI().relativize(itemFile.toURI()).getPath();
                     final ZipEntry entry = new ZipEntry(itemPath);
                     out.putNextEntry(entry);
                     int bytesRead;
