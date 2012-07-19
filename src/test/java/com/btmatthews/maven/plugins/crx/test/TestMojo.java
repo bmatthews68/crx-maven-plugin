@@ -16,8 +16,7 @@
 
 package com.btmatthews.maven.plugins.crx.test;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.eq;
+import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 
@@ -81,6 +80,46 @@ public class TestMojo extends AbstractMojoTestCase {
     }
 
     /**
+     * Verify that a .crx file can be created with a pemPassword but without a classifier property.
+     *
+     * @throws Exception If there was an error executing the unit test.
+     */
+    public void testMojoWithPasssword() throws Exception {
+        setVariableValueToObject(mojo, "finalName", "HelloWorld");
+        setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest1.pem"));
+        setVariableValueToObject(mojo, "pemPassword", "everclear");
+        setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
+        mojo.execute();
+        verify(project).setFile(any(File.class));
+    }
+
+    public void testMojoWhenPEMFileDoesNotExist() throws Exception {
+        try {
+            setVariableValueToObject(mojo, "finalName", "HelloWorld");
+            setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest2.pem"));
+            setVariableValueToObject(mojo, "pemPassword", "everclear");
+            setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
+            mojo.execute();
+            fail();
+        } catch (final MojoExecutionException e) {
+            assertEquals("Could not load the public/private key from the PEM file", e.getMessage());
+        }
+    }
+
+    public void testMojoWhenPEMFileIsCorrupted() throws Exception {
+        try {
+            setVariableValueToObject(mojo, "finalName", "HelloWorld");
+            setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest3.pem"));
+            setVariableValueToObject(mojo, "pemPassword", "everclear");
+            setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
+            mojo.execute();
+            fail();
+        } catch (final MojoExecutionException e) {
+            assertEquals("Could not load the public/private key from the PEM file", e.getMessage());
+        }
+    }
+
+    /**
      * Verify that a .crx file can be created without a classifier property.
      *
      * @throws Exception If there was an error executing the unit test.
@@ -91,7 +130,7 @@ public class TestMojo extends AbstractMojoTestCase {
         setVariableValueToObject(mojo, "classifier", "debug");
         setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
         mojo.execute();
-        verify(projectHelper).attachArtifact(project, eq("crx"), eq("debug"), any(File.class));
+        verify(projectHelper).attachArtifact(same(project), eq("crx"), eq("debug"), any(File.class));
     }
 
     /**

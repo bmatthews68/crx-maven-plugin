@@ -11,7 +11,7 @@
     <packaging>maven-plugin</packaging>
     <name>Google Chrome Extension Plugin</name>
     <description>A Maven 3 plug-in that can be used package and sign Google Chrome Extension projects</description>
-    <inceptionYear>2011</inceptionYear>
+    <inceptionYear>2012</inceptionYear>
     <licenses>
         <license>
             <name>The Apache Software License, Version 2.0</name>
@@ -64,13 +64,6 @@
                         <id>mojo-descriptor</id>
                         <goals>
                             <goal>descriptor</goal>
-                        </goals>
-                    </execution>
-                    <!-- if you want to generate help goal -->
-                    <execution>
-                        <id>help-goal</id>
-                        <goals>
-                            <goal>helpmojo</goal>
                         </goals>
                     </execution>
                 </executions>

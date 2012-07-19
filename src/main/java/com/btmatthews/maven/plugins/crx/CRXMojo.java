@@ -72,7 +72,7 @@ public class CRXMojo extends AbstractMojo {
     /**
      * The source directory for the Chrome Extension.
      */
-    @Parameter(defaultValue = "${basedir}/src/main/chrome")
+    @Parameter(defaultValue = "${basedir}/src/main/chrome", required = true)
     private File crxSourceDirectory;
 
     /**
