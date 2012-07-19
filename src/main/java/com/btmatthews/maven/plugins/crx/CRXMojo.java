@@ -78,13 +78,13 @@ public class CRXMojo extends AbstractMojo {
     /**
      * The final name of the generated artifact.
      */
-    @Parameter(defaultValue = "project.build.finalName", required = true)
+    @Parameter(defaultValue = "${project.build.finalName}", required = true)
     private String finalName;
 
     /**
      * The build target directory.
      */
-    @Parameter(defaultValue = "${project.build.directory", required = true)
+    @Parameter(defaultValue = "${project.build.directory}", required = true)
     private File outputDirectory;
 
     /**
@@ -160,7 +160,7 @@ public class CRXMojo extends AbstractMojo {
         if (classifier != null) {
             projectHelper.attachArtifact(project, "crx", classifier, crxFile);
         } else {
-            project.setFile(crxFile);
+            project.getArtifact().setFile(crxFile);
         }
     }
 
@@ -168,6 +168,7 @@ public class CRXMojo extends AbstractMojo {
                            final byte[] publicKey) throws
             MojoExecutionException {
         try {
+            crxFile.getParentFile().mkdirs();
             final FileOutputStream crx = new FileOutputStream(crxFile);
             crx.write(CRX_MAGIC);
             crx.write(CRX_VERSION);

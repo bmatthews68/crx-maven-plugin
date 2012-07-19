@@ -19,14 +19,17 @@ package com.btmatthews.maven.plugins.crx.test;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 
 import java.io.File;
 
 import com.btmatthews.maven.plugins.crx.CRXMojo;
+import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.repository.MavenArtifactMetadata;
 
 /**
  * Unit test the {@link CRXMojo} class.
@@ -46,6 +49,8 @@ public class TestMojo extends AbstractMojoTestCase {
      */
     private MavenProject project;
 
+    private Artifact artifact;
+
     /**
      * The Maven project helper used to configure the mojo for unit testing
      */
@@ -61,6 +66,8 @@ public class TestMojo extends AbstractMojoTestCase {
         mojo = new CRXMojo();
         project = mock(MavenProject.class);
         projectHelper = mock(MavenProjectHelper.class);
+        artifact = mock(Artifact.class);
+        when(project.getArtifact()).thenReturn(artifact);
         setVariableValueToObject(mojo, "outputDirectory", new File("target"));
         setVariableValueToObject(mojo, "project", project);
         setVariableValueToObject(mojo, "projectHelper", projectHelper);
@@ -76,7 +83,7 @@ public class TestMojo extends AbstractMojoTestCase {
         setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest.pem"));
         setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
         mojo.execute();
-        verify(project).setFile(any(File.class));
+        verify(artifact).setFile(any(File.class));
     }
 
     /**
@@ -90,7 +97,7 @@ public class TestMojo extends AbstractMojoTestCase {
         setVariableValueToObject(mojo, "pemPassword", "everclear");
         setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
         mojo.execute();
-        verify(project).setFile(any(File.class));
+        verify(artifact).setFile(any(File.class));
     }
 
     public void testMojoWhenPEMFileDoesNotExist() throws Exception {
