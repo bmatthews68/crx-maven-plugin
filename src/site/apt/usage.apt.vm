@@ -25,3 +25,30 @@ Usage
 
   The following examples describe the basic usage of the CRX Maven
   Plugin.
+
+* Use as part of a composite project
+
+  You can use the CRX Maven Plugin as part of a composite project.
+
+  +---------------------------------------
+  <project>
+  <packaging>war</packaging>
+  <plugin>
+  <groupId>com.btmatthews.maven.plugins</groupId>
+  <artifactId>crx-maven-plugin</artifactId>
+  <version>${project.version}</version>
+  <configuration>
+  <pemFile>..</pemFile>
+  <pemPassword>...</pemPassword>
+  </configuration>
+  </plugin>
+  </plugins>
+  </build>
+  </project>
+  +---------------------------------------
+
+ * Use as part of a standalone project
+
+  +---------------------------------------
+  +---------------------------------------
+
