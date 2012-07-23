@@ -1,17 +1,18 @@
 crx-maven-plugin
 ================
 
-Maven plugin to package and sign a Chrome Browser Extension.
+  The CRX Maven Plugin is responsible for collecting all the resources of a Google Chrome Extension and packaging
+  them into a signed CRX archive.
 
+```xml
 <plugin>
     <groupId>com.btmatthews.maven.plugins</groupId>
     <artifactId>crx-maven-plugin</artifactId>
     <version>1.0.0</version>
     <extensions>true</extensions>
+    <configuration>
+        <pemFile>${user.home}/.ssh/crx.pem</pemFile>
+        <pemPassword>${crxPassword}
+    </configuration>
 </plugin>
-
-TODO
-Create content for index.apt
-Create content for usage.apt
-Add support for <packaging/>
-Create tests using plugin testing harness
+```

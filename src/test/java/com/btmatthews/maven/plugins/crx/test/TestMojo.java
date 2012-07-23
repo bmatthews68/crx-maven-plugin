@@ -20,6 +20,7 @@ import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
+import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
 
@@ -30,6 +31,8 @@ import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.apache.maven.repository.MavenArtifactMetadata;
+import org.mockito.Mock;
+import org.mockito.MockitoAnnotations;
 
 /**
  * Unit test the {@link CRXMojo} class.
@@ -45,15 +48,21 @@ public class TestMojo extends AbstractMojoTestCase {
     private CRXMojo mojo;
 
     /**
-     * The Maven project model used to configure the mojo for unit testing.
+     * The mock Maven project model used to configure the mojo for unit testing.
      */
+    @Mock
     private MavenProject project;
 
+    /**
+     * The mock Maven artifact descriptor used to configure the mojo for unit testing.
+     */
+    @Mock
     private Artifact artifact;
 
     /**
-     * The Maven project helper used to configure the mojo for unit testing
+     * The mock Maven project helper used to configure the mojo for unit testing
      */
+    @Mock
     private MavenProjectHelper projectHelper;
 
     /**
@@ -63,10 +72,8 @@ public class TestMojo extends AbstractMojoTestCase {
      * @throws Exception If there was an error configuring the CRX mojo.
      */
     protected void setUp() throws Exception {
+        initMocks(this);
         mojo = new CRXMojo();
-        project = mock(MavenProject.class);
-        projectHelper = mock(MavenProjectHelper.class);
-        artifact = mock(Artifact.class);
         when(project.getArtifact()).thenReturn(artifact);
         setVariableValueToObject(mojo, "outputDirectory", new File("target"));
         setVariableValueToObject(mojo, "project", project);
@@ -100,6 +107,11 @@ public class TestMojo extends AbstractMojoTestCase {
         verify(artifact).setFile(any(File.class));
     }
 
+    /**
+     * Verify that an exception is raised when trying to sign a .crx file with a nonexistent PEM file.
+     *
+     * @throws Exception If there was an error executing the unit test.
+     */
     public void testMojoWhenPEMFileDoesNotExist() throws Exception {
         try {
             setVariableValueToObject(mojo, "finalName", "HelloWorld");
@@ -113,6 +125,11 @@ public class TestMojo extends AbstractMojoTestCase {
         }
     }
 
+    /**
+     * Verify that an exception is raised when trying to sign a .crx file with a corrupted PEM file.
+     *
+     * @throws Exception If there was an error executing the unit test.
+     */
     public void testMojoWhenPEMFileIsCorrupted() throws Exception {
         try {
             setVariableValueToObject(mojo, "finalName", "HelloWorld");

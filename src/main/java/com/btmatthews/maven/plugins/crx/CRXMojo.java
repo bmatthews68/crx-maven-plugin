@@ -47,6 +47,16 @@ import org.bouncycastle.openssl.PasswordFinder;
 @Mojo(name = "crx", defaultPhase = LifecyclePhase.PACKAGE)
 public class CRXMojo extends AbstractMojo {
 
+
+    private static final int BYTE_MASK = 0xFF;
+
+    private static final int SHIFT_8 = 8;
+
+    private static final int SHIFT_16 = 16;
+
+    private static final int SHIFT_24 = 24;
+
+    private static final int READ_BUFFER_SIZE = 0x10000;
     /**
      * The magic number for CRX files.
      */
@@ -60,13 +70,13 @@ public class CRXMojo extends AbstractMojo {
     /**
      * The PEM file containing the public/private key.
      */
-    @Parameter(required = true)
+    @Parameter(defaultValue = "${crxPEMFile}", required = true)
     private File pemFile;
 
     /**
      * The password for the PEM file.
      */
-    @Parameter
+    @Parameter(defaultValue = "${crxPEMPassword}")
     private String pemPassword;
 
     /**
@@ -106,12 +116,6 @@ public class CRXMojo extends AbstractMojo {
     private MavenProjectHelper projectHelper;
 
     /**
-     * The default constructor.
-     */
-    public CRXMojo() {
-    }
-
-    /**
      * Called when the Maven plug-in is executing. It creates an in-memory ZIP file of all the Chrome Extension
      * source files, generates as signature using the private key from the PEM file, outputs a CRX file containing
      * a header, the public key, the signature and the ZIP data.
@@ -121,7 +125,7 @@ public class CRXMojo extends AbstractMojo {
      */
 
     @Override
-    public void execute() throws MojoExecutionException, MojoFailureException {
+    public final void execute() throws MojoExecutionException, MojoFailureException {
 
         // Make sure we have a manifest file for the CRX
 
@@ -164,20 +168,32 @@ public class CRXMojo extends AbstractMojo {
         }
     }
 
+    /**
+     * Generate the CRX file writing the header, public key, signature and data.
+     *
+     * @param crxFile   The target CRX file.
+     * @param zipData   The zipped CRX contents.
+     * @param signature The signature of the zipped CRX contents.
+     * @param publicKey The public to be used when verifying signature.
+     * @throws MojoExecutionException If there was an error writing the CRX file.
+     */
     private void outputCRX(final File crxFile, final byte[] zipData, final byte[] signature,
                            final byte[] publicKey) throws
             MojoExecutionException {
         try {
             crxFile.getParentFile().mkdirs();
             final FileOutputStream crx = new FileOutputStream(crxFile);
-            crx.write(CRX_MAGIC);
-            crx.write(CRX_VERSION);
-            writeLength(crx, publicKey.length);
-            writeLength(crx, signature.length);
-            crx.write(publicKey);
-            crx.write(signature);
-            crx.write(zipData);
-            crx.close();
+            try {
+                crx.write(CRX_MAGIC);
+                crx.write(CRX_VERSION);
+                writeLength(crx, publicKey.length);
+                writeLength(crx, signature.length);
+                crx.write(publicKey);
+                crx.write(signature);
+                crx.write(zipData);
+            } finally {
+                crx.close();
+            }
         } catch (final IOException e) {
             throw new MojoExecutionException("Could not write CRX file", e);
         }
@@ -197,7 +213,7 @@ public class CRXMojo extends AbstractMojo {
                 if (pemPassword == null) {
                     pemReader = new PEMReader(pemFileReader);
                 } else {
-                    final PasswordFinder passwordFinder = new SimplePasswordFinder(pemPassword);
+                    final PasswordFinder passwordFinder = new CRXPasswordFinder(pemPassword);
                     pemReader = new PEMReader(pemFileReader, passwordFinder);
                 }
                 try {
@@ -237,13 +253,13 @@ public class CRXMojo extends AbstractMojo {
      *
      * @param out The output stream.
      * @param val The 32-bit integer.
+     * @throws IOException If there was a problem writing to the output stream.
      */
-
     private void writeLength(final OutputStream out, final int val) throws IOException {
-        out.write(val & 0xFF);
-        out.write((val >> 8) & 0xFF);
-        out.write((val >> 16) & 0xFF);
-        out.write((val >> 24) & 0xFF);
+        out.write(val & BYTE_MASK);
+        out.write((val >> SHIFT_8) & BYTE_MASK);
+        out.write((val >> SHIFT_16) & BYTE_MASK);
+        out.write((val >> SHIFT_24) & BYTE_MASK);
     }
 
     /**
@@ -285,7 +301,7 @@ public class CRXMojo extends AbstractMojo {
                     final ZipEntry entry = new ZipEntry(itemPath);
                     out.putNextEntry(entry);
                     int bytesRead;
-                    byte[] byteBuffer = new byte[65536];
+                    byte[] byteBuffer = new byte[READ_BUFFER_SIZE];
                     while ((bytesRead = itemInput.read(byteBuffer)) != -1) {
                         out.write(byteBuffer, 0, bytesRead);
                     }
