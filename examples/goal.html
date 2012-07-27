@@ -3,13 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>CRX Maven Plugin - PMD Results</title>
+    <title>CRX Maven Plugin - Using the crx:crx goal</title>
     <style type="text/css" media="all">
-      @import url("./css/maven-base.css");
-      @import url("./css/maven-theme.css");
-      @import url("./css/site.css");
+      @import url("../css/maven-base.css");
+      @import url("../css/maven-theme.css");
+      @import url("../css/site.css");
     </style>
-    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="../css/print.css" type="text/css" media="print" />
+      <meta name="author" content="Brian Matthews" />
+    <meta name="Date-Creation-yyyymmdd" content="20120727" />
     <meta name="Date-Revision-yyyymmdd" content="20120727" />
     <meta http-equiv="Content-Language" content="en" />
         
@@ -30,7 +32,7 @@
     </head>
   <body class="composite">
     <div id="banner">
-                                      <a href="./" id="bannerLeft">
+                                      <a href=".././" id="bannerLeft">
                 CRX Maven Plugin
                 </a>
                     <div class="clear">
@@ -61,67 +63,32 @@
                                 <h5>Overview</h5>
                   <ul>
                   <li class="none">
-                          <a href="index.html" title="Introduction">Introduction</a>
+                          <a href="../index.html" title="Introduction">Introduction</a>
             </li>
                   <li class="none">
-                          <a href="plugin-info.html" title="Goals">Goals</a>
+                          <a href="../plugin-info.html" title="Goals">Goals</a>
             </li>
                   <li class="none">
-                          <a href="usage.html" title="Usage">Usage</a>
+                          <a href="../usage.html" title="Usage">Usage</a>
             </li>
           </ul>
                        <h5>Examples</h5>
                   <ul>
                   <li class="none">
-                          <a href="examples/packaging.html" title="Using the crx packaging type">Using the crx packaging type</a>
+                          <a href="../examples/packaging.html" title="Using the crx packaging type">Using the crx packaging type</a>
             </li>
                   <li class="none">
-                          <a href="examples/goal.html" title="Using the crx:crx goal">Using the crx:crx goal</a>
-            </li>
+            <strong>Using the crx:crx goal</strong>
+          </li>
           </ul>
                        <h5>Project Documentation</h5>
                   <ul>
                                                                                                                                                                                                                                                                           <li class="collapsed">
-                          <a href="project-info.html" title="Project Information">Project Information</a>
+                          <a href="../project-info.html" title="Project Information">Project Information</a>
                   </li>
-                                                                                                                                                                                                                                                                  <li class="expanded">
-                          <a href="project-reports.html" title="Project Reports">Project Reports</a>
-                    <ul>
-                      <li class="none">
-                          <a href="checkstyle-aggregate.html" title="Checkstyle">Checkstyle</a>
-            </li>
-                      <li class="none">
-                          <a href="checkstyle.html" title="Checkstyle">Checkstyle</a>
-            </li>
-                      <li class="none">
-            <strong>PMD Report</strong>
-          </li>
-                      <li class="none">
-                          <a href="cpd.html" title="CPD Report">CPD Report</a>
-            </li>
-                      <li class="none">
-                          <a href="surefire-report.html" title="Surefire Report">Surefire Report</a>
-            </li>
-                      <li class="none">
-                          <a href="cobertura/index.html" title="Cobertura Test Coverage">Cobertura Test Coverage</a>
-            </li>
-                      <li class="none">
-                          <a href="xref/index.html" title="Source Xref">Source Xref</a>
-            </li>
-                      <li class="none">
-                          <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
-            </li>
-                      <li class="none">
-                          <a href="testapidocs/index.html" title="Test JavaDocs">Test JavaDocs</a>
-            </li>
-                      <li class="none">
-                          <a href="apidocs/index.html" title="JavaDocs">JavaDocs</a>
-            </li>
-                      <li class="none">
-                          <a href="plugin-info.html" title="Plugin Documentation">Plugin Documentation</a>
-            </li>
-              </ul>
-        </li>
+                                                                                                                                                                                                                                                        <li class="collapsed">
+                          <a href="../project-reports.html" title="Project Reports">Project Reports</a>
+                  </li>
           </ul>
                                                                                                                                <a href="http://maven.apache.org/" title="Maven" class="poweredBy">
         <img class="poweredBy"  alt="Maven" src="http://maven.apache.org/images/logos/maven-feather.png"     />
@@ -132,7 +99,38 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>PMD Results<a name="PMD_Results"></a></h2><p>The following document contains the results of <a class="externalLink" href="http://pmd.sourceforge.net/">PMD</a> 4.3.</p></div><div class="section"><h2>Files<a name="Files"></a></h2><p>PMD found no problems in your source code.</p></div>
+        <!-- Copyright 2012 Brian Matthews --><!--  --><!-- Licensed under the Apache License, Version 2.0 (the "License"); --><!-- you may not use this file except in compliance with the License. --><!-- You may obtain a copy of the License at --><!--  --><!-- http://www.apache.org/licenses/LICENSE-2.0 --><!--  --><!-- Unless required by applicable law or agreed to in writing, software --><!-- distributed under the License is distributed on an "AS IS" BASIS, --><!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. --><!-- See the License for the specific language governing permissions and --><!-- limitations under the License. --><div class="section"><h2>Using the crx:crx goal<a name="Using_the_crx:crx_goal"></a></h2><p>Given the following project directory structure placing the source artifacts from the sample Hello World project on the Google Chrome Extensions developer web site into the src/main/chrome sub-directory:</p><div class="source"><pre>HelloWorld
++- pom.xml
++- src
+|  +- main
+|     +- chrome
+|        +- manifest.json
+|        +- icon.png
+|        +- popup.html
+|        +- popup.json
++- target
+   +- HelloWorld-1.0.0-SNAPSHOT.crx
+</pre></div><p>Create the following <b>pom.xml</b> in the root folder of the project:</p><div class="source"><pre>&lt;project&gt;
+  ...
+  &lt;groupId&gt;com.btmatthews.crx&lt;/groupId&gt;
+  &lt;artifactId&gt;HelloWord&lt;/artifactId&gt;
+  &lt;version&gt;1.0.0-SNAPSHOT&lt;/version&gt;
+  ...
+  &lt;build&gt;
+    &lt;plugins&gt;
+      ...
+      &lt;plugin&gt;
+        &lt;groupId&gt;com.btmatthews.maven.plugins&lt;/groupId&gt;
+        &lt;artifactId&gt;crx-maven-plugin&lt;/artifactId&gt;
+        &lt;version&gt;1.0.0&lt;/version&gt;
+      &lt;/plugin&gt;
+      ...
+    &lt;/plugins&gt;
+  &lt;/build&gt;
+  ...
+&lt;/project&gt;
+</pre></div><p>Then executing mvn crx:crx will produce HelloWorld-1.0.0-SNAPSHOT.crx in the target folder.</p><div class="source"><pre>mvn -DcrxPEMFile=~/crx.pem -DcrxPEMPassword=SparkleAndFade crx:crx
+</pre></div></div>
       </div>
     </div>
     <div class="clear">

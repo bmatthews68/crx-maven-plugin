@@ -2,15 +2,15 @@
 
 <rss version="0.91">
   <channel>
-    <title>Google Chrome Extension Plugin - Checkstyle report</title>
+    <title>CRX Maven Plugin - Checkstyle report</title>
     <link>http://crx-maven-plugin.btmatthews.com</link>
-    <description>Google Chrome Extension Plugin - Checkstyle report</description>
+    <description>CRX Maven Plugin - Checkstyle report</description>
     <language>en-us</language>
-    <copyright>&#169;2011 - 2012 Brian Matthews</copyright>
+    <copyright>&#169;2012 Brian Matthews</copyright>
     <item>
-      <title>File: 2,
+      <title>File: 3,
              Errors: 0,
-             Warnings: 15,
+             Warnings: 8,
              Infos: 0
       </title>
             <link>http://crx-maven-plugin.btmatthews.com/checkstyle.html</link>
@@ -35,7 +35,7 @@
                   0
                 </td>
                 <td>
-                  14
+                  7
                 </td>
                 <td>
                   0
@@ -43,7 +43,21 @@
               </tr>
                           <tr>
                 <td>
-                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.SimplePasswordFinder.java">com/btmatthews/maven/plugins/crx/SimplePasswordFinder.java</a>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.package-info.java">com/btmatthews/maven/plugins/crx/package-info.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXPasswordFinder.java">com/btmatthews/maven/plugins/crx/CRXPasswordFinder.java</a>
                 </td>
                 <td>
                   0
