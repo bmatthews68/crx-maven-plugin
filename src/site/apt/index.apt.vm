@@ -3,7 +3,7 @@
  ------
  Brian Matthews
  ------
- 2012-07-22
+ 2012-07-27
  ------
 
 ~~ Copyright 2012 Brian Matthews
@@ -34,45 +34,49 @@ Overview
 
 * Usage
 
-  Include the following plugin dependency in <project/> <build/> <plugins/> enable the use of the crx packaging.
+ General instructions on how to use the Maven CRX Plugin can be found on the {{{./usage.html}usage page}}. Some more
+ specific use cases are described in the examples given below.
 
-+---------------------------------------+
-      <plugin>
-        <groupId>com.btmatthews.maven.plugins</groupId>
-        <artifactId>crx-maven-plugin</artifactId>
-        <version>${project.version}</version>
-        <extensions>true</extensions>
-      </plugin>
-+---------------------------------------+
+* Examples
+
+  To provide you with better understanding on some usages of the Maven CRX Plugin,
+  you can take a look into the following examples:
+
+  * {{{./examples/packaging.html}Using the crx packaging type}}
+
+  * {{{./examples/goal.html}Using the crx:crx goal}}
 
 * Lifecycle
 
   The lifecycle for a Google Chrome Extension is as follows:
 
-  * package - the sources in ./src/main/chrome are assembled in memory into a ZIP file format that is then signed and
+  * <<package>> - the sources in ./src/main/chrome are assembled in memory into a ZIP file format that is then signed
+  and
    output in the Google Chrome Extension format with the extension .crx. This is the CRX archive.
-  * install - the CRX archive is deployed to the user's local repository
-  * deploy - the CRX archive file is deployed to the remote release or snapshot repository
+
+  * <<install>> - the CRX archive is deployed to the user's local repository
+
+  * <<deploy>> - the CRX archive file is deployed to the remote release or snapshot repository
 
 * Security
 
   It is recommended that your private key not be included in your project sources and furthermore that it be password
   protected.
 
-  You can specify the location of your private key and the password on you Maven command line setting the crxPEMFile
-  and crxPEMPassword properties as follows:
+  You can specify the location of your private key and the password on you Maven command line setting the
+  <<crxPEMFile>> and <<crxPEMPassword>> properties as follows:
 
 +---------------------------------------+
-  $ mvn -DcrxPEMFile=/export/home/bmatthews68/crx.pem -DcrxPEMPassword=SparkleAndFade install
+$ mvn -DcrxPEMFile=~/crx.pem -DcrxPEMPassword=SparkleAndFade install
 +---------------------------------------+
 
-  Or you can add them to your ~/.m2/settings.xml file as follows:
+  Or you can add them to your <<~/.m2/settings.xml>> file as follows:
 
 +---------------------------------------+
 <settings>
-  .
+  ...
   <profiles>
-    .
+    ...
     <profile>
       <id>crx</id>
       <properties>
@@ -80,61 +84,15 @@ Overview
         <crxPEMPassword>SparkleAndFade</crxPEMPassword>
       </properties>
     </profile>
-    .
-    .
+    ...
   </profiles>
-  .
-  .
+  ...
 </settings>
 +---------------------------------------+
 
   Also it is possible to password protect your the password.
 
 * Example
-
-  Given the following project directory structure placing the source artifacts from the sample Hello World project on
-  the Google Chrome Extensions developer web site om the src/main/chrome sub-directory:
-
-+---------------------------------------+
-HelloWorld
-+- pom.xml
-+- src
-|  +- main
-|     +- chrome
-|        +- manifest.json
-|        +- icon.png
-|        +- popup.html
-|        +- popup.json
-+- target
-   +- HelloWorld-1.0.0-SNAPSHOT.crx
-+---------------------------------------+
-
-  Create the following pom.xml in the root folder of the project:
-
-+---------------------------------------+
-<project>
-  <groupId>com.btmatthews.crx</groupId>
-  <artifactId>HelloWord</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>crx</packaging>
-  <build>
-    <plugins>
-      <plugin>
-        <groupId>com.btmatthews.maven.plugins</groupId>
-        <artifactId>crx-maven-plugin</artifactId>
-        <version>${project.version}</version>
-        <extensions>true</extensions>
-      </plugin>
-    </plugins>
-  </build>
-</project>
-+---------------------------------------+
-
-  Then executing mvn package will produce HelloWorld-1.0.0-SNAPSHOT.crx in the target folder.
-
-+---------------------------------------+
-mvn -DcrxPEMFile=~/crx.pem -DcrxPEMPassword=SparkleAndFade package
-+---------------------------------------+
 
 * Related links
 

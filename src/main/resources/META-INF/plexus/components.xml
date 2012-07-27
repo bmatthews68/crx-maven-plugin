@@ -3,20 +3,12 @@
         <component>
             <role>org.apache.maven.lifecycle.mapping.LifecycleMapping</role>
             <role-hint>crx</role-hint>
-            <implementation>
-                org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping
-            </implementation>
+            <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
             <configuration>
                 <phases>
-                    <package>
-                        com.btmatthews.maven.plugins:crx-maven-plugin:crx
-                    </package>
-                    <install>
-                        org.apache.maven.plugins:maven-install-plugin:install
-                    </install>
-                    <deploy>
-                        org.apache.maven.plugins:maven-deploy-plugin:deploy
-                    </deploy>
+                    <package>com.btmatthews.maven.plugins:crx-maven-plugin:crx</package>
+                    <install>org.apache.maven.plugins:maven-install-plugin:install</install>
+                    <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
                 </phases>
             </configuration>
         </component>

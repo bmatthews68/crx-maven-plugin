@@ -1,5 +1,5 @@
  ------
- Using the crx packaging type
+ Using the crx:crx goal
  ------
  Brian Matthews
  ------
@@ -20,7 +20,7 @@
 ~~ See the License for the specific language governing permissions and
 ~~ limitations under the License.
 
-Using the crx packaging type
+Using the crx:crx goal
 
   Given the following project directory structure placing the source artifacts from the sample Hello World project on
   the Google Chrome Extensions developer web site into the src/main/chrome sub-directory:
@@ -43,25 +43,28 @@ HelloWorld
 
 +---------------------------------------+
 <project>
+  ...
   <groupId>com.btmatthews.crx</groupId>
   <artifactId>HelloWord</artifactId>
   <version>1.0.0-SNAPSHOT</version>
-  <packaging>crx</packaging>
+  ...
   <build>
     <plugins>
+      ...
       <plugin>
         <groupId>${project.groupId}</groupId>
         <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
-        <extensions>true</extensions>
       </plugin>
+      ...
     </plugins>
   </build>
+  ...
 </project>
 +---------------------------------------+
 
-  Then executing mvn package will produce HelloWorld-1.0.0-SNAPSHOT.crx in the target folder.
+  Then executing mvn crx:crx will produce HelloWorld-1.0.0-SNAPSHOT.crx in the target folder.
 
 +---------------------------------------+
-mvn -DcrxPEMFile=~/crx.pem -DcrxPEMPassword=SparkleAndFade package
+mvn -DcrxPEMFile=~/crx.pem -DcrxPEMPassword=SparkleAndFade crx:crx
 +---------------------------------------+

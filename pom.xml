@@ -9,7 +9,7 @@
     <artifactId>crx-maven-plugin</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>maven-plugin</packaging>
-    <name>Google Chrome Extension Plugin</name>
+    <name>CRX Maven Plugin</name>
     <description>A Maven 3 plug-in that can be used package and sign Google Chrome Extension projects</description>
     <inceptionYear>2012</inceptionYear>
     <licenses>
@@ -57,6 +57,7 @@
                 <artifactId>maven-plugin-plugin</artifactId>
                 <version>3.1</version>
                 <configuration>
+                    <goalPrefix>crx</goalPrefix>
                     <skipErrorNoDescriptorsFound>true</skipErrorNoDescriptorsFound>
                 </configuration>
                 <executions>
@@ -134,7 +135,7 @@
         <dependency>
             <groupId>org.codehaus.plexus</groupId>
             <artifactId>plexus-utils</artifactId>
-            <version>3.0.1</version>
+            <version>3.0.2</version>
         </dependency>
         <dependency>
             <groupId>org.apache.maven.plugin-testing</groupId>
@@ -145,7 +146,7 @@
         <dependency>
             <groupId>org.mockito</groupId>
             <artifactId>mockito-core</artifactId>
-            <version>1.9.0</version>
+            <version>1.9.5-rc1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -153,6 +154,11 @@
             <artifactId>junit</artifactId>
             <version>4.10</version>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.codehaus.plexus</groupId>
+            <artifactId>plexus-archiver</artifactId>
+            <version>2.1.1</version>
         </dependency>
     </dependencies>
     <profiles>

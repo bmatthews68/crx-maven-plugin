@@ -39,8 +39,8 @@
             <item name="Usage" href="usage.html"/>
         </menu>
         <menu name="Examples">
-            <item name="Use crx packaging" href="examples/packaging.html"/>
-            <item name="As additional artifact" href="examples/otherpackaging.html"/>
+            <item name="Using the crx packaging type" href="examples/packaging.html"/>
+            <item name="Using the crx:crx goal" href="examples/goal.html"/>
         </menu>
         <menu ref="reports"/>
     </body>

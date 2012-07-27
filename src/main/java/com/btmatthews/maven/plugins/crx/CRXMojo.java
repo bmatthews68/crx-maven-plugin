@@ -21,6 +21,7 @@ import java.security.GeneralSecurityException;
 import java.security.KeyPair;
 import java.security.Security;
 import java.security.Signature;
+import java.util.zip.Deflater;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 
@@ -272,6 +273,8 @@ public class CRXMojo extends AbstractMojo {
         try {
             final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
             final ZipOutputStream out = new ZipOutputStream(buffer);
+            out.setMethod(ZipOutputStream.DEFLATED);
+            out.setLevel(Deflater.BEST_COMPRESSION);
             zipDirectory(crxSourceDirectory, out);
             out.close();
             return buffer.toByteArray();

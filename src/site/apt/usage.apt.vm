@@ -3,7 +3,7 @@
  ------
  Brian Matthews
  ------
- 2012-07-19
+ 2012-07-27
  ------
 
 ~~ Copyright 2012 Brian Matthews
@@ -20,82 +20,89 @@
 ~~ See the License for the specific language governing permissions and
 ~~ limitations under the License.
 
-
 Usage
 
-  The following examples describe the basic usage of the CRX Maven
-  Plugin.
+  The CRX Maven Plugin is used to package and sign a Google Chrome Extension. There are two ways to use the CRX
+  Maven Plugin.
 
-* Use as part of a composite project
+  If the packaging type defined in the <<pom.xml>> is <<crx>>, the <<package>> lifecycle phase can be used:
 
-  You can use the CRX Maven Plugin as part of a composite project when the Google Chrome Extension is not the
-  primary artifact that is being produced by the build.
++----+
+mvn package
++----+
 
-+---------------------------------------+
+  or using the {{{./crx-mojo.html}crx:crx}} goal:
+
++----+
+mvn crx:crx
++----+
+
+Using the crx packaging
+
+  To enable the <<crx>> packaging type, the POM or one of its ancestors you must include this plugin dependency
+  declaration with <<\<extensions/\>>> set to <<true>>.
+
++----+
 <project>
-  .
-  <groupId>com.btmatthews.crx</groupId>
-  <artifactId>HelloWorld</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
-  <packaging>war</packaging>
-  .
-  .
-  <build>
-    .
-    <plugins>
-      .
-      <plugin>
-        <groupId>com.btmatthews.maven.plugins</groupId>
-        <artifactId>crx-maven-plugin</artifactId>
-        <version>${project.version}</version>
-        <configuration>
-          <pemFile>...</pemFile>
-          <pemPassword>...</pemPassword>
-        </configuration>
-      </plugin>
-      .
-    </plugins>
-    .
-  </build>
-  .
-  .
-</project>
-+---------------------------------------+
-
-* Use as part of a standalone project
-
-  You can use the CRX Maven Plugin in a standalone project where the Google Chrome Extension is the the primary
-  artifact that is being produced by the build.
-
-+---------------------------------------+
-<project>
-  .
-  <groupId>com.btmatthews.crx</groupId>
-  <artifactId>HelloWorld</artifactId>
-  <version>1.0.0-SNAPSHOT</version>
+  ...
   <packaging>crx</packaging>
-  .
-  .
+  ...
   <build>
-    .
+    ...
     <plugins>
-      .
+      ...
       <plugin>
-        <groupId>com.btmatthews.maven.plugins</groupId>
-        <artifactId>crx-maven-plugin</artifactId>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
         <version>${project.version}</version>
         <extensions>true</extensions>
         <configuration>
-          <pemFile>...</pemFile>
-          <pemPassword>...</pemPassword>
+          ...
         </configuration>
       </plugin>
-      .
+      ...
     </plugins>
-    .
+    ...
   </build>
-  .
-  .
+  ...
 </project>
-+---------------------------------------+
++----+
 
+Using the crx:crx goal
+
+  When the Google Chrome Extension is not the primary artifact being produced you only need to include this
+  plugin dependency declaration.
+
++----+
+<project>
+  ...
+  <build>
+    ...
+    <plugins>
+      ...
+      <plugin>
+        <groupId>${project.groupId}</groupId>
+        <artifactId>${project.artifactId}</artifactId>
+        <version>${project.version}</version>
+        <configuration>
+          ...
+        </configuration>
+      </plugin>
+      ...
+    </plugins>
+    ...
+  </build>
+  ...
+</project>
++----+
+
+  You should add the <<${project.groupId}>> prefix to <<\<pluginGroups/\>>> in your <<~/settings.xml>> in
+  order to avoid having to supply explicitly specify the groupId when invoking the <<crx:crx>> goal.
+
++----+
+<pluginGroups>
+  ...
+  <pluginGroup>${project.groupId}</pluginGroup>
+  ...
+ </pluginGroups>
++----+
