@@ -14,9 +14,11 @@
  * limitations under the License.
  */
 
-package com.btmatthews.maven.plugins.crx.test;
+package com.btmatthews.maven.plugins.crx;
 
+import static org.apache.maven.plugin.testing.ArtifactStubFactory.setVariableValueToObject;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.*;
 import static org.mockito.Mockito.verify;
@@ -57,7 +59,12 @@ public class TestArchiver {
     @Before
     public void setUp() throws Exception {
         archiver = new CRXArchiver();
-        archiver.setDestFile(outputDirectory.newFile("HelloWord-1.0.0-SNAPSHOT.crx"));
+        archiver.setDestFile(new File(outputDirectory.getRoot(), "HelloWord-1.0.0-SNAPSHOT.crx"));
+    }
+
+    @Test
+    public void testType() {
+        assertEquals("crx", archiver.getArchiveType());
     }
 
     /**
@@ -67,6 +74,19 @@ public class TestArchiver {
      */
     @Test
     public void testArchiver() throws Exception {
+        archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
+        archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
+        archiver.createArchive();
+    }
+
+    /**
+     * Verify that the {@link CRXMojo} will overwrite an existing .crx file
+     *
+     * @throws Exception If there was an unexpected error during the test case execution.
+     */
+    @Test
+    public void testArchiverWhenFileAlreadyExists() throws Exception {
+        outputDirectory.newFile("HelloWord-1.0.0-SNAPSHOT.crx");
         archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
         archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
         archiver.createArchive();

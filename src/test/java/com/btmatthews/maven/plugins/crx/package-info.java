@@ -17,4 +17,4 @@
 /**
  * This package contains the unit tests for the Maven Mojo classes.
  */
-package com.btmatthews.maven.plugins.crx.test;
+package com.btmatthews.maven.plugins.crx;

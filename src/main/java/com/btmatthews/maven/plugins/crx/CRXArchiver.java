@@ -146,7 +146,11 @@ public class CRXArchiver extends AbstractZipArchiver {
                            final byte[] publicKey) throws
             ArchiverException {
         try {
-            crxFile.getParentFile().mkdirs();
+            if (crxFile.exists()) {
+                crxFile.delete();
+            } else {
+                crxFile.getParentFile().mkdirs();
+            }
             final FileOutputStream crx = new FileOutputStream(crxFile);
             try {
                 crx.write(CRX_MAGIC);

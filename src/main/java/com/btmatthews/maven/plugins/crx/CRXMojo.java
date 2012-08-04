@@ -127,9 +127,6 @@ public class CRXMojo extends AbstractMojo {
         // Generate the CRX file
 
         final File crxFile = new File(outputDirectory, crxFilename.toString());
-        if (crxFile.exists()) {
-            crxFile.delete();
-        }
 
         crxArchiver.setPemFile(pemFile);
         crxArchiver.setPemPassword(pemPassword);
@@ -138,7 +135,7 @@ public class CRXMojo extends AbstractMojo {
 
         try {
             crxArchiver.createArchive();
-        } catch (IOException e) {
+        } catch (final IOException e) {
             throw new MojoExecutionException("Failed to package and sign the Google Chrome Extension", e);
         } catch (final ArchiverException e) {
             throw new MojoExecutionException(e.getMessage(), e);
