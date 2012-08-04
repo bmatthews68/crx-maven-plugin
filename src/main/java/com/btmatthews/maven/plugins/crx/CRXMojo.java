@@ -30,6 +30,7 @@ import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
 import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.util.StringUtils;
 
 /**
  * Implement the crx goal for the plug-in. The crx goal packages and signs a Chrome Browser Extension producing a file
@@ -117,7 +118,7 @@ public class CRXMojo extends AbstractMojo {
 
         final StringBuilder crxFilename = new StringBuilder();
         crxFilename.append(finalName);
-        if (classifier != null && classifier.length() > 0) {
+        if (StringUtils.isNotEmpty(classifier)) {
             crxFilename.append('-');
             crxFilename.append(classifier);
         }
@@ -145,7 +146,7 @@ public class CRXMojo extends AbstractMojo {
 
         // Attach the artifact to the build life-cycle
 
-        if (classifier != null) {
+        if (StringUtils.isNotEmpty(classifier)) {
             projectHelper.attachArtifact(project, "crx", classifier, crxFile);
         } else {
             project.getArtifact().setFile(crxFile);
