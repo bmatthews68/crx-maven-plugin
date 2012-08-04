@@ -12,5 +12,25 @@
                 </phases>
             </configuration>
         </component>
-    </components>
+        <component>
+            <role>org.apache.maven.artifact.handler.ArtifactHandler</role>
+            <role-hint>crx</role-hint>
+            <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
+            <configuration>
+                <type>nar</type>
+                <extension>crx</extension>
+                <packaging>crx</packaging>
+                <language>javascript</language>
+                <addedToClasspath>false</addedToClasspath>
+                <includesDependencies>true</includesDependencies>
+                <classifier />
+            </configuration>
+        </component>
+        <component>
+            <role>org.codehaus.plexus.archiver.Archiver</role>
+            <role-hint>crx</role-hint>
+            <implementation>com.btmatthews.maven.plugins.crx.CRXArchiver</implementation>
+            <instantiation-strategy>per-lookup</instantiation-strategy>
+        </component>
+     </components>
 </component-set>

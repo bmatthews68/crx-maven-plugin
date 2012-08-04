@@ -16,14 +16,8 @@
 
 package com.btmatthews.maven.plugins.crx;
 
-import java.io.*;
-import java.security.GeneralSecurityException;
-import java.security.KeyPair;
-import java.security.Security;
-import java.security.Signature;
-import java.util.zip.Deflater;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipOutputStream;
+import java.io.File;
+import java.io.IOException;
 
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
@@ -34,9 +28,8 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
-import org.bouncycastle.openssl.PEMReader;
-import org.bouncycastle.openssl.PasswordFinder;
+import org.codehaus.plexus.archiver.Archiver;
+import org.codehaus.plexus.archiver.ArchiverException;
 
 /**
  * Implement the crx goal for the plug-in. The crx goal packages and signs a Chrome Browser Extension producing a file
@@ -47,26 +40,6 @@ import org.bouncycastle.openssl.PasswordFinder;
  */
 @Mojo(name = "crx", defaultPhase = LifecyclePhase.PACKAGE)
 public class CRXMojo extends AbstractMojo {
-
-
-    private static final int BYTE_MASK = 0xFF;
-
-    private static final int SHIFT_8 = 8;
-
-    private static final int SHIFT_16 = 16;
-
-    private static final int SHIFT_24 = 24;
-
-    private static final int READ_BUFFER_SIZE = 0x10000;
-    /**
-     * The magic number for CRX files.
-     */
-    private static final byte[] CRX_MAGIC = { 0x43, 0x72, 0x32, 0x34 };
-
-    /**
-     * The CRX header version number in little endian format.
-     */
-    private static final byte[] CRX_VERSION = { 0x02, 0x00, 0x00, 0x00 };
 
     /**
      * The PEM file containing the public/private key.
@@ -117,6 +90,12 @@ public class CRXMojo extends AbstractMojo {
     private MavenProjectHelper projectHelper;
 
     /**
+     * The archiver component that is used to package and sign the Google Chrome Extension.
+     */
+    @Component(role = Archiver.class, hint = "crx")
+    private CRXArchiver crxArchiver;
+
+    /**
      * Called when the Maven plug-in is executing. It creates an in-memory ZIP file of all the Chrome Extension
      * source files, generates as signature using the private key from the PEM file, outputs a CRX file containing
      * a header, the public key, the signature and the ZIP data.
@@ -124,7 +103,6 @@ public class CRXMojo extends AbstractMojo {
      * @throws MojoExecutionException If there was an error that should stop the build.
      * @throws MojoFailureException   If there was an error but the build might be allowed to continue.
      */
-
     @Override
     public final void execute() throws MojoExecutionException, MojoFailureException {
 
@@ -135,30 +113,35 @@ public class CRXMojo extends AbstractMojo {
             throw new MojoExecutionException("Missing manifest.json file");
         }
 
-        // Add the Bouncy Castle security provider
-
-        Security.addProvider(new BouncyCastleProvider());
-
-        // ZIP the CRX source directory tree
-
-        final byte[] zipData = createZipFile();
-
-        // Get the public/private key and sign the ZIP
-
-        final KeyPair keyPair = getKeyPair();
-        byte[] publicKey = keyPair.getPublic().getEncoded();
-        byte[] signature = sign(zipData, keyPair);
-
         // Generate CRX file name
 
         final StringBuilder crxFilename = new StringBuilder();
         crxFilename.append(finalName);
+        if (classifier != null && classifier.length() > 0) {
+            crxFilename.append('-');
+            crxFilename.append(classifier);
+        }
         crxFilename.append(".crx");
 
         // Generate the CRX file
 
         final File crxFile = new File(outputDirectory, crxFilename.toString());
-        outputCRX(crxFile, zipData, signature, publicKey);
+        if (crxFile.exists()) {
+            crxFile.delete();
+        }
+
+        crxArchiver.setPemFile(pemFile);
+        crxArchiver.setPemPassword(pemPassword);
+        crxArchiver.addDirectory(crxSourceDirectory, null, null);
+        crxArchiver.setDestFile(crxFile);
+
+        try {
+            crxArchiver.createArchive();
+        } catch (IOException e) {
+            throw new MojoExecutionException("Failed to package and sign the Google Chrome Extension", e);
+        } catch (final ArchiverException e) {
+            throw new MojoExecutionException(e.getMessage(), e);
+        }
 
         // Attach the artifact to the build life-cycle
 
@@ -166,152 +149,6 @@ public class CRXMojo extends AbstractMojo {
             projectHelper.attachArtifact(project, "crx", classifier, crxFile);
         } else {
             project.getArtifact().setFile(crxFile);
-        }
-    }
-
-    /**
-     * Generate the CRX file writing the header, public key, signature and data.
-     *
-     * @param crxFile   The target CRX file.
-     * @param zipData   The zipped CRX contents.
-     * @param signature The signature of the zipped CRX contents.
-     * @param publicKey The public to be used when verifying signature.
-     * @throws MojoExecutionException If there was an error writing the CRX file.
-     */
-    private void outputCRX(final File crxFile, final byte[] zipData, final byte[] signature,
-                           final byte[] publicKey) throws
-            MojoExecutionException {
-        try {
-            crxFile.getParentFile().mkdirs();
-            final FileOutputStream crx = new FileOutputStream(crxFile);
-            try {
-                crx.write(CRX_MAGIC);
-                crx.write(CRX_VERSION);
-                writeLength(crx, publicKey.length);
-                writeLength(crx, signature.length);
-                crx.write(publicKey);
-                crx.write(signature);
-                crx.write(zipData);
-            } finally {
-                crx.close();
-            }
-        } catch (final IOException e) {
-            throw new MojoExecutionException("Could not write CRX file", e);
-        }
-    }
-
-    /**
-     * Read the public/private key pair from a PEM file.
-     *
-     * @return The public/private key pair.
-     * @throws MojoExecutionException If there was an error reading the public/private key pair from the file.
-     */
-    private KeyPair getKeyPair() throws MojoExecutionException {
-        try {
-            final Reader pemFileReader = new FileReader(pemFile);
-            try {
-                final PEMReader pemReader;
-                if (pemPassword == null) {
-                    pemReader = new PEMReader(pemFileReader);
-                } else {
-                    final PasswordFinder passwordFinder = new CRXPasswordFinder(pemPassword);
-                    pemReader = new PEMReader(pemFileReader, passwordFinder);
-                }
-                try {
-                    return (KeyPair)pemReader.readObject();
-                } finally {
-                    pemReader.close();
-                }
-            } finally {
-                pemFileReader.close();
-            }
-        } catch (final IOException e) {
-            throw new MojoExecutionException("Could not load the public/private key from the PEM file", e);
-        }
-    }
-
-    /**
-     * Generate the signature for a byte array using the private key.
-     *
-     * @param data    The byte array.
-     * @param keyPair The public/private key pair.
-     * @return The signature as a byte array.
-     * @throws MojoExecutionException If there was a error generating the signature.
-     */
-    private byte[] sign(final byte[] data, final KeyPair keyPair) throws MojoExecutionException {
-        try {
-            final Signature signatureObject = Signature.getInstance("SHA1withRSA");
-            signatureObject.initSign(keyPair.getPrivate());
-            signatureObject.update(data);
-            return signatureObject.sign();
-        } catch (final GeneralSecurityException e) {
-            throw new MojoExecutionException("Could not generate the signature for the CRX file", e);
-        }
-    }
-
-    /**
-     * Write a 32-bit integer to the output stream in little endian format.
-     *
-     * @param out The output stream.
-     * @param val The 32-bit integer.
-     * @throws IOException If there was a problem writing to the output stream.
-     */
-    private void writeLength(final OutputStream out, final int val) throws IOException {
-        out.write(val & BYTE_MASK);
-        out.write((val >> SHIFT_8) & BYTE_MASK);
-        out.write((val >> SHIFT_16) & BYTE_MASK);
-        out.write((val >> SHIFT_24) & BYTE_MASK);
-    }
-
-    /**
-     * Create a ZIP file in memory containing the directory tree.
-     *
-     * @return A byte array containing the ZIP file.
-     * @throws MojoExecutionException If there was an error reading the contents of the source directory.
-     */
-    private byte[] createZipFile() throws MojoExecutionException {
-        try {
-            final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
-            final ZipOutputStream out = new ZipOutputStream(buffer);
-            out.setMethod(ZipOutputStream.DEFLATED);
-            out.setLevel(Deflater.BEST_COMPRESSION);
-            zipDirectory(crxSourceDirectory, out);
-            out.close();
-            return buffer.toByteArray();
-        } catch (final IOException e) {
-            throw new MojoExecutionException("Problem processing the Chrome Extension sources", e);
-        }
-    }
-
-    /**
-     * Recursively compress the contents of a directory tree to a ZIP output stream.
-     *
-     * @param directory The root of the directory tree.
-     * @param out       The ZIP output stream.
-     * @throws IOException If there was an error reading the
-     *                     directory contents or writing to the ZIP output stream.
-     */
-    private void zipDirectory(final File directory, final ZipOutputStream out) throws IOException {
-        final String[] itemNames = directory.list();
-        for (final String itemName : itemNames) {
-            final File itemFile = new File(directory, itemName);
-            if (itemFile.isDirectory()) {
-                zipDirectory(itemFile, out);
-            } else {
-                final FileInputStream itemInput = new FileInputStream(itemFile);
-                try {
-                    final String itemPath = crxSourceDirectory.toURI().relativize(itemFile.toURI()).getPath();
-                    final ZipEntry entry = new ZipEntry(itemPath);
-                    out.putNextEntry(entry);
-                    int bytesRead;
-                    byte[] byteBuffer = new byte[READ_BUFFER_SIZE];
-                    while ((bytesRead = itemInput.read(byteBuffer)) != -1) {
-                        out.write(byteBuffer, 0, bytesRead);
-                    }
-                } finally {
-                    itemInput.close();
-                }
-            }
         }
     }
 }

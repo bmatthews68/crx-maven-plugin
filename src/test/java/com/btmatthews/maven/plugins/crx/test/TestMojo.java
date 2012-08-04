@@ -17,22 +17,20 @@
 package com.btmatthews.maven.plugins.crx.test;
 
 import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
 
+import com.btmatthews.maven.plugins.crx.CRXArchiver;
 import com.btmatthews.maven.plugins.crx.CRXMojo;
 import org.apache.maven.artifact.Artifact;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.testing.AbstractMojoTestCase;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.apache.maven.repository.MavenArtifactMetadata;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 /**
  * Unit test the {@link CRXMojo} class.
@@ -78,7 +76,8 @@ public class TestMojo extends AbstractMojoTestCase {
         setVariableValueToObject(mojo, "outputDirectory", new File("target"));
         setVariableValueToObject(mojo, "project", project);
         setVariableValueToObject(mojo, "projectHelper", projectHelper);
-    }
+        setVariableValueToObject(mojo, "crxArchiver", new CRXArchiver());
+     }
 
     /**
      * Verify that a .crx file can be created without a pemPassword or classifier property.
