@@ -21,6 +21,7 @@ import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.isNull;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
@@ -44,6 +45,51 @@ import org.mockito.Mock;
  * @since 1.0.0
  */
 public class TestMojo {
+
+    /**
+     * The name of the artifact final name field in the {@link CRXMojo} class.
+     */
+    private static final String FINAL_NAME_FIELD = "finalName";
+
+    /**
+     * The name of the password for the PEM file field in the {@link CRXMojo} class.
+     */
+    private static final String PEM_PASSWORD_FIELD = "pemPassword";
+
+    /**
+     * The name of the PEM file path field in the {@link CRXMojo} class.
+     */
+    private static final String PEM_FILE_FIELD = "pemFile";
+
+    /**
+     * The name of the source directory path field in the {@link CRXMojo} class.
+     */
+    private static final String CRX_SOURCE_DIRECTORY_FIELD = "crxSourceDirectory";
+
+    /**
+     * The name of the output directory path field in the {@link CRXMojo} class.
+     */
+    private static final String OUTPUT_DIRECTORY_FIELD = "outputDirectory";
+
+    /**
+     * The name of the {@link MavenProject} field in the {@link CRXMojo} class.
+     */
+    private static final String PROJECT_FIELD = "project";
+
+    /**
+     * The name of the {@link MavenProjectHelper} field in the {@link CRXMojo} class.
+     */
+    private static final String PROJECT_HELPER_FIELD = "projectHelper";
+
+    /**
+     * The name of the {@link CRXArchiver} field in the {@link CRXMojo} class.
+     */
+    private static final String CRX_ARCHIVER_FIELD = "crxArchiver";
+
+    /**
+     * The name of the artifact classifier filed in the {@link CRXMojo} class.
+     */
+    private static final String CLASSIFIER_FIELD = "classifier";
 
     /**
      * Temporary folder in which the generated .crx file is to be created. JUnit will automatically dispose of this
@@ -75,6 +121,9 @@ public class TestMojo {
     @Mock
     private MavenProjectHelper projectHelper;
 
+    /**
+     * The mock {@link CRXArchiver} that would be used to output the CRX archiver.
+     */
     @Mock
     private CRXArchiver archiver;
 
@@ -89,10 +138,13 @@ public class TestMojo {
         initMocks(this);
         mojo = new CRXMojo();
         when(project.getArtifact()).thenReturn(artifact);
-        setVariableValueToObject(mojo, "outputDirectory", outputDirectory.getRoot());
-        setVariableValueToObject(mojo, "project", project);
-        setVariableValueToObject(mojo, "projectHelper", projectHelper);
-        setVariableValueToObject(mojo, "crxArchiver", archiver);
+        setVariableValueToObject(mojo, OUTPUT_DIRECTORY_FIELD, outputDirectory.getRoot());
+        setVariableValueToObject(mojo, PROJECT_FIELD, project);
+        setVariableValueToObject(mojo, PROJECT_HELPER_FIELD, projectHelper);
+        setVariableValueToObject(mojo, CRX_ARCHIVER_FIELD, archiver);
+        setVariableValueToObject(mojo, FINAL_NAME_FIELD, "HelloWorld");
+        setVariableValueToObject(mojo, PEM_FILE_FIELD, new File("target/test-classes/crxtest.pem"));
+        setVariableValueToObject(mojo, CRX_SOURCE_DIRECTORY_FIELD, new File("target/test-classes/HelloWorld"));
     }
 
     /**
@@ -102,26 +154,29 @@ public class TestMojo {
      */
     @Test
     public void testMojo() throws Exception {
-        setVariableValueToObject(mojo, "finalName", "HelloWorld");
-        setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest.pem"));
-        setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
         mojo.execute();
+        verify(archiver).setPemFile(any(File.class));
+        verify(archiver).setPemPassword(isNull(String.class));
+        verify(archiver).addDirectory(any(File.class), isNull(String[].class), isNull(String[].class));
+        verify(archiver).setDestFile(any(File.class));
         verify(archiver).createArchive();
         verify(artifact).setFile(any(File.class));
     }
 
     /**
      * Verify that a .crx file can be created with a pemPassword but without a classifier property.
-     * <p/>
-     * v     * @throws Exception If there was an  unexpected error during the test case execution.
+     *
+     * @throws Exception If there was an  unexpected error during the test case execution.
      */
     @Test
     public void testMojoWithPasssword() throws Exception {
-        setVariableValueToObject(mojo, "finalName", "HelloWorld");
-        setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest1.pem"));
-        setVariableValueToObject(mojo, "pemPassword", "everclear");
-        setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
+        setVariableValueToObject(mojo, PEM_FILE_FIELD, new File("target/test-classes/crxtest1.pem"));
+        setVariableValueToObject(mojo, PEM_PASSWORD_FIELD, "everclear");
         mojo.execute();
+        verify(archiver).setPemFile(any(File.class));
+        verify(archiver).setPemPassword(eq("everclear"));
+        verify(archiver).addDirectory(any(File.class), isNull(String[].class), isNull(String[].class));
+        verify(archiver).setDestFile(any(File.class));
         verify(archiver).createArchive();
         verify(artifact).setFile(any(File.class));
     }
@@ -133,11 +188,12 @@ public class TestMojo {
      */
     @Test
     public void testMojoWithClassifier() throws Exception {
-        setVariableValueToObject(mojo, "finalName", "HelloWorld");
-        setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest.pem"));
-        setVariableValueToObject(mojo, "classifier", "debug");
-        setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
+        setVariableValueToObject(mojo, CLASSIFIER_FIELD, "debug");
         mojo.execute();
+        verify(archiver).setPemFile(any(File.class));
+        verify(archiver).setPemPassword(isNull(String.class));
+        verify(archiver).addDirectory(any(File.class), isNull(String[].class), isNull(String[].class));
+        verify(archiver).setDestFile(any(File.class));
         verify(archiver).createArchive();
         verify(projectHelper).attachArtifact(same(project), eq("crx"), eq("debug"), any(File.class));
     }
@@ -149,10 +205,7 @@ public class TestMojo {
      */
     @Test(expected = MojoExecutionException.class)
     public void testMojoFailsWithoutManifest() throws Exception {
-        setVariableValueToObject(mojo, "finalName", "HelloWorld");
-        setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest.pem"));
-        setVariableValueToObject(mojo, "classifier", "debug");
-        setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/GoodbyeWorld"));
+        setVariableValueToObject(mojo, CRX_SOURCE_DIRECTORY_FIELD, new File("target/test-classes/GoodbyeWorld"));
         mojo.execute();
     }
 
@@ -164,10 +217,7 @@ public class TestMojo {
      */
     @Test(expected = MojoExecutionException.class)
     public void testMojoFailsAfterIOException() throws Exception {
-        doThrow(new IOException("Expected exception")).when(archiver).createArchive();
-        setVariableValueToObject(mojo, "finalName", "HelloWorld");
-        setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest.pem"));
-        setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
+        doThrow(IOException.class).when(archiver).createArchive();
         mojo.execute();
     }
 
@@ -179,10 +229,7 @@ public class TestMojo {
      */
     @Test(expected = MojoExecutionException.class)
     public void testMojoFailsAfterArchiverException() throws Exception {
-        doThrow(new ArchiverException("Expected exception")).when(archiver).createArchive();
-        setVariableValueToObject(mojo, "finalName", "HelloWorld");
-        setVariableValueToObject(mojo, "pemFile", new File("target/test-classes/crxtest.pem"));
-        setVariableValueToObject(mojo, "crxSourceDirectory", new File("target/test-classes/HelloWorld"));
+        doThrow(ArchiverException.class).when(archiver).createArchive();
         mojo.execute();
     }
 }

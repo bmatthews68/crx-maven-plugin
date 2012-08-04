@@ -32,8 +32,12 @@ import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
 @Component(role = CRXPasswordFinder.class)
 public class CRXPasswordFinder implements PasswordFinder {
 
+    /**
+     * The security dispatcher is used to decrypt the password.
+     */
     @Requirement(hint = "maven")
     private SecDispatcher securityDispatcher;
+
     /**
      * The plain text password.
      */
@@ -57,7 +61,7 @@ public class CRXPasswordFinder implements PasswordFinder {
      * @see org.bouncycastle.openssl.PasswordFinder#getPassword()
      */
     @Override
-    public final char[] getPassword() {
+    public char[] getPassword() {
         if (securityDispatcher == null) {
             return password.toCharArray();
         } else {

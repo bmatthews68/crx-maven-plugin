@@ -16,17 +16,16 @@
 
 package com.btmatthews.maven.plugins.crx;
 
-import static org.apache.maven.plugin.testing.ArtifactStubFactory.setVariableValueToObject;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
-import static org.mockito.Matchers.*;
-import static org.mockito.Mockito.verify;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.byteThat;
+import static org.mockito.Mockito.*;
 
 import java.io.File;
+import java.io.IOException;
+import java.security.GeneralSecurityException;
+import java.security.KeyPair;
 
-import com.btmatthews.maven.plugins.crx.CRXArchiver;
-import org.apache.maven.plugin.MojoExecutionException;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Before;
 import org.junit.Rule;
@@ -44,7 +43,7 @@ public class TestArchiver {
     /**
      * The {@link CRXArchiver} used in unit tests.
      */
-    private CRXArchiver archiver;
+    private CRXArchiverImpl archiver;
 
     /**
      * Temporary folder in which the generated .crx file will be created. JUnit will automatically dispose of this
@@ -58,8 +57,10 @@ public class TestArchiver {
      */
     @Before
     public void setUp() throws Exception {
-        archiver = new CRXArchiver();
+        archiver = new CRXArchiverImpl();
         archiver.setDestFile(new File(outputDirectory.getRoot(), "HelloWord-1.0.0-SNAPSHOT.crx"));
+        archiver.setSignatureHelper(new CRXSignatureHelper());
+        archiver.setArchiveHelper(new CRXArchiveHelper());
     }
 
     @Test
@@ -110,17 +111,12 @@ public class TestArchiver {
      *
      * @throws Exception If there was an error executing the unit test.
      */
-    @Test
+    @Test(expected = ArchiverException.class)
     public void testArchiverWhenPEMFileDoesNotExist() throws Exception {
-        try {
-            archiver.setPemFile(new File("target/test-classes/crxtest2.pem"));
-            archiver.setPemPassword("everclear");
-            archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
-            archiver.createArchive();
-            fail();
-        } catch (final ArchiverException e) {
-            assertEquals("Could not load the public/private key from the PEM file", e.getMessage());
-        }
+        archiver.setPemFile(new File("target/test-classes/crxtest2.pem"));
+        archiver.setPemPassword("everclear");
+        archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
+        archiver.createArchive();
     }
 
     /**
@@ -128,16 +124,42 @@ public class TestArchiver {
      *
      * @throws Exception If there was an error executing the unit test.
      */
-    @Test
+    @Test(expected = ArchiverException.class)
     public void testArchiverWhenPEMFileIsCorrupted() throws Exception {
-        try {
-            archiver.setPemFile(new File("target/test-classes/crxtest3.pem"));
-            archiver.setPemPassword("everclear");
-            archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
-            archiver.createArchive();
-            fail();
-        } catch (final ArchiverException e) {
-            assertEquals("Could not load the public/private key from the PEM file", e.getMessage());
-        }
+        archiver.setPemFile(new File("target/test-classes/crxtest3.pem"));
+        archiver.setPemPassword("everclear");
+        archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
+        archiver.createArchive();
+    }
+
+    /**
+     * Verify that an exception is raised when the signing fails.
+     *
+     * @throws Exception If there was an exepected or unexpected error executing the unit test.
+     */
+    @Test(expected = ArchiverException.class)
+    public void testArchiverWhenSignatureHelperFails() throws Exception {
+        final SignatureHelper helper = mock(SignatureHelper.class);
+        when(helper.sign(any(byte[].class), any(KeyPair.class))).thenThrow(GeneralSecurityException.class);
+        archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
+        archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
+        archiver.setSignatureHelper(helper);
+        archiver.createArchive();
+    }
+
+    /**
+     * Verify that an exception is raised when writing the archive failes.
+     *
+     * @throws Exception If there was an exepected or unexpected error executing the unit test.
+     */
+    @Test(expected = ArchiverException.class)
+    public void testArchiverWhenArchiveHelperFails() throws Exception {
+        final ArchiveHelper helper = mock(ArchiveHelper.class);
+        doThrow(IOException.class).when(helper).writeArchive(any(File.class), any(byte[].class), any(byte[].class),
+                any(byte[].class));
+        archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
+        archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
+        archiver.setArchiveHelper(helper);
+        archiver.createArchive();
     }
 }

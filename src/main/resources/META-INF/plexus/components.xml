@@ -29,7 +29,7 @@
         <component>
             <role>org.codehaus.plexus.archiver.Archiver</role>
             <role-hint>crx</role-hint>
-            <implementation>com.btmatthews.maven.plugins.crx.CRXArchiver</implementation>
+            <implementation>com.btmatthews.maven.plugins.crx.CRXArchiverImpl</implementation>
             <instantiation-strategy>per-lookup</instantiation-strategy>
         </component>
      </components>
