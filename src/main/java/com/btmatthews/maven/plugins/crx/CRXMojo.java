@@ -93,7 +93,7 @@ public class CRXMojo extends AbstractMojo {
     /**
      * The archiver component that is used to package and sign the Google Chrome Extension.
      */
-    @Component(role = Archiver.class, hint = "crx")
+    @Component(role = CRXArchiver.class, hint = "crx")
     private CRXArchiver crxArchiver;
 
     /**

@@ -23,14 +23,36 @@
                 <language>javascript</language>
                 <addedToClasspath>false</addedToClasspath>
                 <includesDependencies>true</includesDependencies>
-                <classifier />
+                <classifier/>
             </configuration>
         </component>
         <component>
-            <role>org.codehaus.plexus.archiver.Archiver</role>
+            <role>com.btmatthews.maven.plugins.crx.CRXArchiver</role>
             <role-hint>crx</role-hint>
             <implementation>com.btmatthews.maven.plugins.crx.CRXArchiverImpl</implementation>
             <instantiation-strategy>per-lookup</instantiation-strategy>
+            <requirements>
+                <requirement>
+                    <role>com.btmatthews.maven.plugins.crx.ArchiveHelper</role>
+                    <role-hint>crx</role-hint>
+                    <field>archiveHelper</field>
+                </requirement>
+                <requirement>
+                    <role>com.btmatthews.maven.plugins.crx.SignatureHelper</role>
+                    <role-hint>crx</role-hint>
+                    <field>signatureHelper</field>
+                </requirement>
+            </requirements>
         </component>
-     </components>
+        <component>
+            <role>com.btmatthews.maven.plugins.crx.ArchiveHelper</role>
+            <role-hint>crx</role-hint>
+            <implementation>com.btmatthews.maven.plugins.crx.CRXArchiveHelper</implementation>
+        </component>
+        <component>
+            <role>com.btmatthews.maven.plugins.crx.SignatureHelper</role>
+            <role-hint>crx</role-hint>
+            <implementation>com.btmatthews.maven.plugins.crx.CRXSignatureHelper</implementation>
+        </component>
+    </components>
 </component-set>

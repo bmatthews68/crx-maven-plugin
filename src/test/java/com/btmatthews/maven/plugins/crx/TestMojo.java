@@ -16,7 +16,7 @@
 
 package com.btmatthews.maven.plugins.crx;
 
-import static org.apache.maven.plugin.testing.ArtifactStubFactory.setVariableValueToObject;
+import static org.codehaus.plexus.util.ReflectionUtils.setVariableValueInObject;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
@@ -138,13 +138,13 @@ public class TestMojo {
         initMocks(this);
         mojo = new CRXMojo();
         when(project.getArtifact()).thenReturn(artifact);
-        setVariableValueToObject(mojo, OUTPUT_DIRECTORY_FIELD, outputDirectory.getRoot());
-        setVariableValueToObject(mojo, PROJECT_FIELD, project);
-        setVariableValueToObject(mojo, PROJECT_HELPER_FIELD, projectHelper);
-        setVariableValueToObject(mojo, CRX_ARCHIVER_FIELD, archiver);
-        setVariableValueToObject(mojo, FINAL_NAME_FIELD, "HelloWorld");
-        setVariableValueToObject(mojo, PEM_FILE_FIELD, new File("target/test-classes/crxtest.pem"));
-        setVariableValueToObject(mojo, CRX_SOURCE_DIRECTORY_FIELD, new File("target/test-classes/HelloWorld"));
+        setVariableValueInObject(mojo, OUTPUT_DIRECTORY_FIELD, outputDirectory.getRoot());
+        setVariableValueInObject(mojo, PROJECT_FIELD, project);
+        setVariableValueInObject(mojo, PROJECT_HELPER_FIELD, projectHelper);
+        setVariableValueInObject(mojo, CRX_ARCHIVER_FIELD, archiver);
+        setVariableValueInObject(mojo, FINAL_NAME_FIELD, "HelloWorld");
+        setVariableValueInObject(mojo, PEM_FILE_FIELD, new File("target/test-classes/crxtest.pem"));
+        setVariableValueInObject(mojo, CRX_SOURCE_DIRECTORY_FIELD, new File("target/test-classes/HelloWorld"));
     }
 
     /**
@@ -170,8 +170,8 @@ public class TestMojo {
      */
     @Test
     public void testMojoWithPasssword() throws Exception {
-        setVariableValueToObject(mojo, PEM_FILE_FIELD, new File("target/test-classes/crxtest1.pem"));
-        setVariableValueToObject(mojo, PEM_PASSWORD_FIELD, "everclear");
+        setVariableValueInObject(mojo, PEM_FILE_FIELD, new File("target/test-classes/crxtest1.pem"));
+        setVariableValueInObject(mojo, PEM_PASSWORD_FIELD, "everclear");
         mojo.execute();
         verify(archiver).setPemFile(any(File.class));
         verify(archiver).setPemPassword(eq("everclear"));
@@ -188,7 +188,7 @@ public class TestMojo {
      */
     @Test
     public void testMojoWithClassifier() throws Exception {
-        setVariableValueToObject(mojo, CLASSIFIER_FIELD, "debug");
+        setVariableValueInObject(mojo, CLASSIFIER_FIELD, "debug");
         mojo.execute();
         verify(archiver).setPemFile(any(File.class));
         verify(archiver).setPemPassword(isNull(String.class));
@@ -205,7 +205,7 @@ public class TestMojo {
      */
     @Test(expected = MojoExecutionException.class)
     public void testMojoFailsWithoutManifest() throws Exception {
-        setVariableValueToObject(mojo, CRX_SOURCE_DIRECTORY_FIELD, new File("target/test-classes/GoodbyeWorld"));
+        setVariableValueInObject(mojo, CRX_SOURCE_DIRECTORY_FIELD, new File("target/test-classes/GoodbyeWorld"));
         mojo.execute();
     }
 

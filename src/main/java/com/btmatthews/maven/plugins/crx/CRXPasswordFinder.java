@@ -29,7 +29,7 @@ import org.sonatype.plexus.components.sec.dispatcher.SecDispatcherException;
  * @author <a href="mailto:brian@brianmatthews.me">Brian Matthews</a>
  * @since 1.0.0
  */
-@Component(role = CRXPasswordFinder.class)
+@Component(role = CRXPasswordFinder.class, hint = "crx")
 public class CRXPasswordFinder implements PasswordFinder {
 
     /**
@@ -61,7 +61,7 @@ public class CRXPasswordFinder implements PasswordFinder {
      * @see org.bouncycastle.openssl.PasswordFinder#getPassword()
      */
     @Override
-    public char[] getPassword() {
+    public final char[] getPassword() {
         if (securityDispatcher == null) {
             return password.toCharArray();
         } else {

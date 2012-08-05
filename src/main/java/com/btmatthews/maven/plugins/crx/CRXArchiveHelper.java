@@ -29,7 +29,7 @@ import org.codehaus.plexus.component.annotations.Component;
  * @author <a href="mailto:brian@btmatthews.com">Brian Matthews</a>
  * @since 1.1.0
  */
-@Component(role = ArchiveHelper.class)
+@Component(role = ArchiveHelper.class, hint = "crx")
 public class CRXArchiveHelper implements ArchiveHelper {
     /**
      * Used to as a mask when extracting 8 least significant bits of a integer.

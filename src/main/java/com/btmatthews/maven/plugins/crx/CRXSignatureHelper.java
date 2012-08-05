@@ -28,7 +28,7 @@ import org.codehaus.plexus.component.annotations.Component;
  * @author <a href="mailto:brian@btmatthews.com">Brian Matthews</a>
  * @since 1.1.0
  */
-@Component(role = SignatureHelper.class)
+@Component(role = SignatureHelper.class, hint = "crx")
 public class CRXSignatureHelper implements SignatureHelper {
 
     /**

@@ -29,6 +29,8 @@ import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.archiver.ResourceIterator;
 import org.codehaus.plexus.archiver.zip.AbstractZipArchiver;
 import org.codehaus.plexus.archiver.zip.ZipOutputStream;
+import org.codehaus.plexus.component.annotations.Component;
+import org.codehaus.plexus.component.annotations.Requirement;
 
 /**
  * This archiver packages and signs a Google Chrome Extension.
@@ -36,6 +38,7 @@ import org.codehaus.plexus.archiver.zip.ZipOutputStream;
  * @author <a href="mailto:brian@btmatthews.com">Brian Matthews</a>
  * @since 1.1.0
  */
+@Component(role = CRXArchiver.class, hint = "crx", instantiationStrategy = "per-lookup")
 public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver {
 
     /**
@@ -51,11 +54,13 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     /**
      * The helper that is used to sign the ZIP archive.
      */
+    @Requirement(hint = "crx")
     private SignatureHelper signatureHelper;
 
     /**
      * The helper that is used to output the CRX archive.
      */
+    @Requirement(hint = "crx")
     private ArchiveHelper archiveHelper;
 
     /**
