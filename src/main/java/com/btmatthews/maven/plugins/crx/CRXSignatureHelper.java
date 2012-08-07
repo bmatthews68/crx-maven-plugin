@@ -17,7 +17,8 @@
 package com.btmatthews.maven.plugins.crx;
 
 import java.security.GeneralSecurityException;
-import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.security.Signature;
 
 import org.codehaus.plexus.component.annotations.Component;
@@ -39,15 +40,23 @@ public class CRXSignatureHelper implements SignatureHelper {
     /**
      * Generate the signature for a byte array using the private key.
      *
-     * @param data    The byte array.
-     * @param keyPair The public/private key pair.
+     * @param data The byte array.
+     * @param key  private key.
      * @return The signature as a byte array.
      * @throws GeneralSecurityException If there was a error generating the signature.
      */
-    public byte[] sign(final byte[] data, final KeyPair keyPair) throws GeneralSecurityException {
+    public byte[] sign(final byte[] data, final PrivateKey key) throws GeneralSecurityException {
         final Signature signatureObject = Signature.getInstance(ALGORITHM);
-        signatureObject.initSign(keyPair.getPrivate());
+        signatureObject.initSign(key);
         signatureObject.update(data);
         return signatureObject.sign();
+    }
+
+    public boolean check(final byte[] data, final PublicKey key, final byte[] signature) throws
+            GeneralSecurityException {
+        final Signature signatureObject = Signature.getInstance(ALGORITHM);
+        signatureObject.initVerify(key);
+        signatureObject.update(data);
+        return signatureObject.verify(signature);
     }
 }

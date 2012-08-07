@@ -36,6 +36,7 @@ public interface ArchiveHelper {
      * @param publicKey The public to be used when verifying signature.
      * @throws java.io.IOException If there was an error writing the CRX file.
      */
-    void writeArchive(final File crxFile, final byte[] zipData, final byte[] signature,
-                      final byte[] publicKey) throws IOException;
+    void writeArchive(File crxFile, byte[] zipData, byte[] signature, byte[] publicKey) throws IOException;
+
+    CRXArchive readArchive(File crxFile) throws IOException;
 }

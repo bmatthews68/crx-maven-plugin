@@ -17,7 +17,8 @@
 package com.btmatthews.maven.plugins.crx;
 
 import java.security.GeneralSecurityException;
-import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 /**
  * Implementations sign byte arrays using public/private key pairs.
@@ -30,10 +31,13 @@ public interface SignatureHelper {
     /**
      * Generate the signature for a byte array using the private key.
      *
-     * @param data    The byte array.
-     * @param keyPair The public/private key pair.
+     * @param data The byte array.
+     * @param key  private key.
      * @return The signature as a byte array.
      * @throws GeneralSecurityException If there was a error generating the signature.
      */
-    byte[] sign(final byte[] data, final KeyPair keyPair) throws GeneralSecurityException;
+    byte[] sign(byte[] data, PrivateKey key) throws GeneralSecurityException;
+
+    boolean check(byte[] data, PublicKey key, byte[] signature) throws
+            GeneralSecurityException;
 }

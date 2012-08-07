@@ -128,7 +128,7 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
 
             final KeyPair keyPair = getKeyPair();
             byte[] publicKey = keyPair.getPublic().getEncoded();
-            byte[] signature = signatureHelper.sign(zipData, keyPair);
+            byte[] signature = signatureHelper.sign(zipData, keyPair.getPrivate());
 
             // Write the CRX file
 

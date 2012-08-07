@@ -16,10 +16,7 @@
 
 package com.btmatthews.maven.plugins.crx;
 
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.OutputStream;
+import java.io.*;
 
 import org.codehaus.plexus.component.annotations.Component;
 
@@ -91,6 +88,27 @@ public class CRXArchiveHelper implements ArchiveHelper {
         }
     }
 
+    public CRXArchive readArchive(final File crxFile) throws IOException {
+        final byte[] buffer = new byte[4];
+        final InputStream crxIn = new FileInputStream(crxFile);
+        try {
+            crxIn.read(buffer);
+            crxIn.read(buffer);
+            final int signatureLength = readLength(crxIn);
+            final int publicKeyLength = readLength(crxIn);
+            final byte[] publicKey = new byte[publicKeyLength];
+            crxIn.read(publicKey);
+            final byte[] signature = new byte[signatureLength];
+            crxIn.read(signature);
+            final int dataLength = (int)(crxFile.length() - 16 - publicKeyLength - signatureLength);
+            final byte[] data = new byte[dataLength];
+            crxIn.read(data);
+            return new CRXArchive(publicKey, signature, data);
+        } finally {
+            crxIn.close();
+        }
+    }
+
     /**
      * Write a 32-bit integer to the output stream in little endian format.
      *
@@ -103,5 +121,11 @@ public class CRXArchiveHelper implements ArchiveHelper {
         out.write((val >> SHIFT_8) & BYTE_MASK);
         out.write((val >> SHIFT_16) & BYTE_MASK);
         out.write((val >> SHIFT_24) & BYTE_MASK);
+    }
+
+    public int readLength(final InputStream in) throws IOException {
+        final byte[] buffer = new byte[4];
+        in.read(buffer, 0, 4);
+        return (buffer[0] << SHIFT_24) | (buffer[1] << SHIFT_16) | (buffer[2] << SHIFT_8) | buffer[3];
     }
 }

@@ -25,6 +25,8 @@ import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
 import java.security.KeyPair;
+import java.security.PrivateKey;
+import java.security.PublicKey;
 
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Before;
@@ -140,7 +142,7 @@ public class TestArchiver {
     @Test(expected = ArchiverException.class)
     public void testArchiverWhenSignatureHelperFails() throws Exception {
         final SignatureHelper helper = mock(SignatureHelper.class);
-        when(helper.sign(any(byte[].class), any(KeyPair.class))).thenThrow(GeneralSecurityException.class);
+        when(helper.sign(any(byte[].class), any(PrivateKey.class))).thenThrow(GeneralSecurityException.class);
         archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
         archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
         archiver.setSignatureHelper(helper);
