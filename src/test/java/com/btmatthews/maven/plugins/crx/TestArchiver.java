@@ -17,6 +17,7 @@
 package com.btmatthews.maven.plugins.crx;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.*;
 
@@ -62,6 +63,9 @@ public class TestArchiver {
         archiver.setArchiveHelper(new CRXArchiveHelper());
     }
 
+    /**
+     * Verify that {@link CRXArchiverImpl#getArchiveType()} returns &quot;crx&quot;.
+     */
     @Test
     public void testType() {
         assertEquals("crx", archiver.getArchiveType());
@@ -77,6 +81,7 @@ public class TestArchiver {
         archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
         archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
         archiver.createArchive();
+        assertTrue(new File(outputDirectory.getRoot(), "HelloWord-1.0.0-SNAPSHOT.crx").exists());
     }
 
     /**
@@ -90,6 +95,7 @@ public class TestArchiver {
         archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
         archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
         archiver.createArchive();
+        assertTrue(new File(outputDirectory.getRoot(), "HelloWord-1.0.0-SNAPSHOT.crx").exists());
     }
 
     /**
@@ -103,6 +109,7 @@ public class TestArchiver {
         archiver.setPemPassword("everclear");
         archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
         archiver.createArchive();
+        assertTrue(new File(outputDirectory.getRoot(), "HelloWord-1.0.0-SNAPSHOT.crx").exists());
     }
 
     /**
@@ -134,7 +141,7 @@ public class TestArchiver {
     /**
      * Verify that an exception is raised when the signing fails.
      *
-     * @throws Exception If there was an exepected or unexpected error executing the unit test.
+     * @throws Exception If there was an expected or unexpected error executing the unit test.
      */
     @Test(expected = ArchiverException.class)
     public void testArchiverWhenSignatureHelperFails() throws Exception {
@@ -149,7 +156,7 @@ public class TestArchiver {
     /**
      * Verify that an exception is raised when writing the archive failes.
      *
-     * @throws Exception If there was an exepected or unexpected error executing the unit test.
+     * @throws Exception If there was an expected or unexpected error executing the unit test.
      */
     @Test(expected = ArchiverException.class)
     public void testArchiverWhenArchiveHelperFails() throws Exception {

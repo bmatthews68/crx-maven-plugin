@@ -1,4 +1,5 @@
-import java.io.*;
+import java.io.File;
+import java.io.FileNotFoundException;
 
 File file = new File( basedir, "target/HelloWorld-1.0.0-SNAPSHOT-debug.crx" );
 if ( !file.isFile() )

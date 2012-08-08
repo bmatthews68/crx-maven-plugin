@@ -32,7 +32,7 @@
                 <extensions>true</extensions>
                 <configuration>
                     <pemFile>crxtest.pem</pemFile>
-                    <classifier>debug</classifier>
+                    <pemPassword>everclear</pemPassword>
                 </configuration>
             </plugin>
         </plugins>
