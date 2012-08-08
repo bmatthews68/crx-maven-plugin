@@ -18,7 +18,7 @@
             <role-hint>crx</role-hint>
             <implementation>org.apache.maven.artifact.handler.DefaultArtifactHandler</implementation>
             <configuration>
-                <type>nar</type>
+                <type>crx</type>
                 <extension>crx</extension>
                 <packaging>crx</packaging>
                 <language>javascript</language>
