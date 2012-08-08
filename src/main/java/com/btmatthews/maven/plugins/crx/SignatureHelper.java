@@ -38,6 +38,15 @@ public interface SignatureHelper {
      */
     byte[] sign(byte[] data, PrivateKey key) throws GeneralSecurityException;
 
+    /**
+     * Check that the signature is valid using the public key.
+     *
+     * @param data      The data for which the signature was generated.
+     * @param key       The public key.
+     * @param signature The signature.
+     * @return {@code true} if the signature was valid. Otherwise, {@code false}.
+     * @throws GeneralSecurityException If there was an error validating the signature.
+     */
     boolean check(byte[] data, PublicKey key, byte[] signature) throws
             GeneralSecurityException;
 }

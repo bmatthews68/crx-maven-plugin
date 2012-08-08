@@ -34,12 +34,9 @@ public class TestArchive {
      */
     @Test
     public void testArchive() {
-        final byte[] publicKey = new byte[1];
-        final byte[] signature = new byte[1];
-        final byte[] data = new byte[1];
-        final CRXArchive archive = new CRXArchive(publicKey, signature, data);
-        assertSame(publicKey, archive.getPublicKey());
-        assertSame(signature, archive.getSignature());
-        assertSame(data, archive.getData());
+        final CRXArchive archive = new CRXArchive(DummyArchive.PUBLIC_KEY, DummyArchive.SIGNATURE, DummyArchive.DATA);
+        assertSame(DummyArchive.PUBLIC_KEY, archive.getPublicKey());
+        assertSame(DummyArchive.SIGNATURE, archive.getSignature());
+        assertSame(DummyArchive.DATA, archive.getData());
     }
 }

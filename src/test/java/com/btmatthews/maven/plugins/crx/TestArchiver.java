@@ -18,15 +18,12 @@ package com.btmatthews.maven.plugins.crx;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.byteThat;
 import static org.mockito.Mockito.*;
 
 import java.io.File;
 import java.io.IOException;
 import java.security.GeneralSecurityException;
-import java.security.KeyPair;
 import java.security.PrivateKey;
-import java.security.PublicKey;
 
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Before;
@@ -157,8 +154,7 @@ public class TestArchiver {
     @Test(expected = ArchiverException.class)
     public void testArchiverWhenArchiveHelperFails() throws Exception {
         final ArchiveHelper helper = mock(ArchiveHelper.class);
-        doThrow(IOException.class).when(helper).writeArchive(any(File.class), any(byte[].class), any(byte[].class),
-                any(byte[].class));
+        doThrow(IOException.class).when(helper).writeArchive(any(File.class), any(CRXArchive.class));
         archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
         archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
         archiver.setArchiveHelper(helper);

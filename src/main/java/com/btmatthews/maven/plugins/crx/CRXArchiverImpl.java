@@ -132,7 +132,8 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
 
             // Write the CRX file
 
-            archiveHelper.writeArchive(getDestFile(), zipData, signature, publicKey);
+            final CRXArchive archive = new CRXArchive(publicKey, signature, zipData);
+            archiveHelper.writeArchive(getDestFile(), archive);
         } catch (final GeneralSecurityException e) {
             throw new ArchiverException("Could not generate the signature for the CRX file", e);
         } catch (final IOException e) {

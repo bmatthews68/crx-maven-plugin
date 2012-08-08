@@ -52,6 +52,15 @@ public class CRXSignatureHelper implements SignatureHelper {
         return signatureObject.sign();
     }
 
+    /**
+     * Check that the signature is valid using the public key.
+     *
+     * @param data      The data for which the signature was generated.
+     * @param key       The public key.
+     * @param signature The signature.
+     * @return {@code true} if the signature was valid. Otherwise, {@code false}.
+     * @throws GeneralSecurityException If there was an error validating the signature.
+     */
     public boolean check(final byte[] data, final PublicKey key, final byte[] signature) throws
             GeneralSecurityException {
         final Signature signatureObject = Signature.getInstance(ALGORITHM);

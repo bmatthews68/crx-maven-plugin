@@ -92,7 +92,7 @@ public class CRXVerifyMojo extends AbstractMojo {
 
         final File crxFile;
 
-        if (crxPath != null) {
+        if (crxPath == null) {
 
             // Generate CRX file name
 

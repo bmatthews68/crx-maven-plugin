@@ -61,14 +61,11 @@ public class CRXArchiveHelper implements ArchiveHelper {
     /**
      * Generate the CRX file writing the header, public key, signature and data.
      *
-     * @param crxFile   The target CRX file.
-     * @param zipData   The zipped CRX contents.
-     * @param signature The signature of the zipped CRX contents.
-     * @param publicKey The public to be used when verifying signature.
+     * @param crxFile    The target CRX file.
+     * @param crxArchive The CRX archive.
      * @throws IOException If there was an error writing the CRX file.
      */
-    public void writeArchive(final File crxFile, final byte[] zipData, final byte[] signature,
-                             final byte[] publicKey) throws IOException {
+    public void writeArchive(final File crxFile, final CRXArchive crxArchive) throws IOException {
         if (crxFile.exists()) {
             crxFile.delete();
         } else {
@@ -78,24 +75,31 @@ public class CRXArchiveHelper implements ArchiveHelper {
         try {
             crx.write(CRX_MAGIC);
             crx.write(CRX_VERSION);
-            writeLength(crx, publicKey.length);
-            writeLength(crx, signature.length);
-            crx.write(publicKey);
-            crx.write(signature);
-            crx.write(zipData);
+            writeLength(crx, crxArchive.getPublicKey().length);
+            writeLength(crx, crxArchive.getSignature().length);
+            crx.write(crxArchive.getPublicKey());
+            crx.write(crxArchive.getSignature());
+            crx.write(crxArchive.getData());
         } finally {
             crx.close();
         }
     }
 
+    /**
+     * Read the CRX archive from a file loading the header, public key, signature and data.
+     *
+     * @param crxFile The source CRX file.
+     * @return The CRX archive.
+     * @throws IOException If there was an error reading the CRX file.
+     */
     public CRXArchive readArchive(final File crxFile) throws IOException {
         final byte[] buffer = new byte[4];
         final InputStream crxIn = new FileInputStream(crxFile);
         try {
             crxIn.read(buffer);
             crxIn.read(buffer);
-            final int signatureLength = readLength(crxIn);
             final int publicKeyLength = readLength(crxIn);
+            final int signatureLength = readLength(crxIn);
             final byte[] publicKey = new byte[publicKeyLength];
             crxIn.read(publicKey);
             final byte[] signature = new byte[signatureLength];
@@ -123,9 +127,17 @@ public class CRXArchiveHelper implements ArchiveHelper {
         out.write((val >> SHIFT_24) & BYTE_MASK);
     }
 
-    public int readLength(final InputStream in) throws IOException {
+    /**
+     * Read a 32-bit integer from the output stream in little endian format.
+     *
+     * @param in The input stream.
+     * @return The 32-bit integer.
+     * @throws IOException If there was a problem reading from the input stream.
+     */
+    private int readLength(final InputStream in) throws IOException {
         final byte[] buffer = new byte[4];
         in.read(buffer, 0, 4);
-        return (buffer[0] << SHIFT_24) | (buffer[1] << SHIFT_16) | (buffer[2] << SHIFT_8) | buffer[3];
+        return (buffer[3] << SHIFT_24) | ((buffer[2] & BYTE_MASK) << SHIFT_16) | ((buffer[1] & BYTE_MASK) << SHIFT_8)
+                | (buffer[0] & BYTE_MASK);
     }
 }

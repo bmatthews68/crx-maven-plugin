@@ -20,7 +20,7 @@ import java.io.File;
 import java.io.IOException;
 
 /**
- * Implementations output CRX archives.
+ * Implementations read and write CRX archives.
  *
  * @author <a href="mailto:brian@btmatthews.com">Brian Matthews</a>
  * @since 1.1.0
@@ -30,13 +30,18 @@ public interface ArchiveHelper {
     /**
      * Generate the CRX file writing the header, public key, signature and data.
      *
-     * @param crxFile   The target CRX file.
-     * @param zipData   The zipped CRX contents.
-     * @param signature The signature of the zipped CRX contents.
-     * @param publicKey The public to be used when verifying signature.
-     * @throws java.io.IOException If there was an error writing the CRX file.
+     * @param crxFile    The target CRX file.
+     * @param crxArchive The CRX archive.
+     * @throws IOException If there was an error writing the CRX file.
      */
-    void writeArchive(File crxFile, byte[] zipData, byte[] signature, byte[] publicKey) throws IOException;
+    void writeArchive(File crxFile, CRXArchive crxArchive) throws IOException;
 
+    /**
+     * Read the CRX archive from a file loading the header, public key, signature and data.
+     *
+     * @param crxFile The source CRX file.
+     * @return The CRX archive.
+     * @throws IOException If there was an error reading the CRX file.
+     */
     CRXArchive readArchive(File crxFile) throws IOException;
 }
