@@ -3,7 +3,7 @@
  ------
  Brian Matthews
  ------
- 2012-07-27
+ 2012-08-09
  ------
 
 ~~ Copyright 2012 Brian Matthews
@@ -31,6 +31,8 @@ Overview
 
   * {{{./crx-mojo.html}crx:crx}} is the default goal invoked during the packaging phase for projects with a packaging
   type of crx. It builds the signed CRX archive.
+  * {{{./crx-verify-mojo.html}crx:crx-verify}} is invoked during the verification phase for projects with a packaging
+  type of crx. IT verifies the integrity of the CRX archive.
 
 * Usage
 
@@ -51,12 +53,13 @@ Overview
   The lifecycle for a Google Chrome Extension is as follows:
 
   * <<package>> - the sources in ./src/main/chrome are assembled in memory into a ZIP file format that is then signed
-  and
-   output in the Google Chrome Extension format with the extension .crx. This is the CRX archive.
+  and output in the Google Chrome Extension format with the extension .crx. This is the CRX archive.
 
-  * <<install>> - the CRX archive is deployed to the user's local repository
+  * <<verify>> - the signature of the CRX archive is checked.
 
-  * <<deploy>> - the CRX archive file is deployed to the remote release or snapshot repository
+  * <<install>> - the CRX archive is deployed to the user's local repository.
+
+  * <<deploy>> - the CRX archive file is deployed to the remote release or snapshot repository.
 
 * Security
 
