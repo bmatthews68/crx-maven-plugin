@@ -53,6 +53,11 @@
                 <groupId>org.pitest</groupId>
                 <artifactId>pitest-maven</artifactId>
                 <version>0.27</version>
+                <configuration>
+                    <jvmArgs>
+                        <value>-XX:-UseSplitVerifier</value>
+                    </jvmArgs>
+                </configuration>
             </plugin>
             <plugin>
                 <artifactId>maven-site-plugin</artifactId>
