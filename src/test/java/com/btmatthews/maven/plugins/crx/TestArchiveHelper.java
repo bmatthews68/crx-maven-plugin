@@ -20,7 +20,6 @@ import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.io.File;
-import java.io.IOException;
 
 import org.junit.Before;
 import org.junit.Rule;
@@ -35,19 +34,33 @@ import org.junit.rules.TemporaryFolder;
  */
 public class TestArchiveHelper {
 
+    /**
+     * The {@link CRXArchiveHelper} being tested.
+     */
     private ArchiveHelper archiveHelper;
 
+    /**
+     * Temporary folder used for output.
+     */
     @Rule
     public TemporaryFolder outputDirectory = new TemporaryFolder();
 
+    /**
+     * Prepare for test case execution.
+     */
     @Before
     public void setUp() {
         archiveHelper = new CRXArchiveHelper();
     }
 
+    /**
+     * Verify writing an archive and reading it back into memory.
+     *
+     * @throws Exception If there is an unexpected problem.
+     */
     @Test
-    public void testReadWrite() throws IOException {
-        final File crxFile = new File(outputDirectory.getRoot(), "test.crx");
+    public void testReadWrite() throws Exception {
+        final File crxFile = new File(outputDirectory.getRoot(), "HelloWorld-1.0.0-SNAPSHOT.crx");
         final CRXArchive crxOutArchive = new DummyArchive();
         archiveHelper.writeArchive(crxFile, crxOutArchive);
         final CRXArchive crxInArchive = archiveHelper.readArchive(crxFile);
