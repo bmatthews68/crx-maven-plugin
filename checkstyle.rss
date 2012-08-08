@@ -8,9 +8,9 @@
     <language>en-us</language>
     <copyright>&#169;2012 Brian Matthews</copyright>
     <item>
-      <title>File: 3,
+      <title>File: 11,
              Errors: 0,
-             Warnings: 8,
+             Warnings: 22,
              Infos: 0
       </title>
             <link>http://crx-maven-plugin.btmatthews.com/checkstyle.html</link>
@@ -30,6 +30,76 @@
                           <tr>
                 <td>
                   <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXMojo.java">com/btmatthews/maven/plugins/crx/CRXMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXArchiver.java">com/btmatthews/maven/plugins/crx/CRXArchiver.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXArchive.java">com/btmatthews/maven/plugins/crx/CRXArchive.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  3
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.ArchiveHelper.java">com/btmatthews/maven/plugins/crx/ArchiveHelper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.SignatureHelper.java">com/btmatthews/maven/plugins/crx/SignatureHelper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXArchiverImpl.java">com/btmatthews/maven/plugins/crx/CRXArchiverImpl.java</a>
                 </td>
                 <td>
                   0
@@ -57,13 +127,55 @@
               </tr>
                           <tr>
                 <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXVerifyMojo.java">com/btmatthews/maven/plugins/crx/CRXVerifyMojo.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXArchiveHelper.java">com/btmatthews/maven/plugins/crx/CRXArchiveHelper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  9
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
                   <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXPasswordFinder.java">com/btmatthews/maven/plugins/crx/CRXPasswordFinder.java</a>
                 </td>
                 <td>
                   0
                 </td>
                 <td>
-                  1
+                  0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.CRXSignatureHelper.java">com/btmatthews/maven/plugins/crx/CRXSignatureHelper.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  2
                 </td>
                 <td>
                   0
