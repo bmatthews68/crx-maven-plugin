@@ -28,7 +28,6 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
-import org.codehaus.plexus.archiver.Archiver;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.codehaus.plexus.util.StringUtils;
 
@@ -59,6 +58,18 @@ public class CRXMojo extends AbstractMojo {
      */
     @Parameter(defaultValue = "${basedir}/src/main/chrome", required = true)
     private File crxSourceDirectory;
+
+    /**
+     * A comma separated list of inclusion rules.
+     */
+    @Parameter(required = false)
+    private String packagingIncludes;
+
+    /**
+     * A comma separated list of exclusion rules.
+     */
+    @Parameter(required = false)
+    private String packagingExcludes;
 
     /**
      * The final name of the generated artifact.
@@ -127,10 +138,12 @@ public class CRXMojo extends AbstractMojo {
         // Generate the CRX file
 
         final File crxFile = new File(outputDirectory, crxFilename.toString());
+        final String[] includes = ParameterUtils.splitParameter(packagingIncludes);
+        final String[] excludes = ParameterUtils.splitParameter(packagingExcludes);
 
         crxArchiver.setPemFile(pemFile);
         crxArchiver.setPemPassword(pemPassword);
-        crxArchiver.addDirectory(crxSourceDirectory, null, null);
+        crxArchiver.addDirectory(crxSourceDirectory, includes, excludes);
         crxArchiver.setDestFile(crxFile);
 
         try {

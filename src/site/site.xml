@@ -41,6 +41,7 @@
         <menu name="Examples">
             <item name="Using the crx packaging type" href="examples/packaging.html"/>
             <item name="Using the crx:crx goal" href="examples/goal.html"/>
+            <item name="Including and excluding resources" href="examples/includes_and_excludes.html"/>
         </menu>
         <menu ref="reports"/>
     </body>

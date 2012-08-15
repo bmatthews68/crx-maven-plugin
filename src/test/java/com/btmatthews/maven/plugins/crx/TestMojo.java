@@ -17,6 +17,7 @@
 package com.btmatthews.maven.plugins.crx;
 
 import static org.codehaus.plexus.util.ReflectionUtils.setVariableValueInObject;
+import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
@@ -90,6 +91,10 @@ public class TestMojo {
      * The name of the artifact classifier filed in the {@link CRXMojo} class.
      */
     private static final String CLASSIFIER_FIELD = "classifier";
+
+    private static final String PACKAGING_INCLUDES_FIELD = "packagingIncludes";
+
+    private static final String PACKAGING_EXCLUDES_FIELD = "packagingExcludes";
 
     /**
      * Temporary folder in which the generated .crx file is to be created. JUnit will automatically dispose of this
@@ -231,5 +236,60 @@ public class TestMojo {
     public void testMojoFailsAfterArchiverException() throws Exception {
         doThrow(ArchiverException.class).when(archiver).createArchive();
         mojo.execute();
+    }
+
+    /**
+     * Verify that the {@link CRXMojo} handles inclusion rules.
+     *
+     * @throws Exception If there was an unexpected exception.
+     */
+    @Test
+    public void testWithIncludes() throws Exception {
+        setVariableValueInObject(mojo, PACKAGING_INCLUDES_FIELD, "manifest.json,popup.js,popup.html,icon.png");
+        mojo.execute();
+        verify(archiver).setPemFile(any(File.class));
+        verify(archiver).setPemPassword(isNull(String.class));
+        verify(archiver).addDirectory(any(File.class),
+                aryEq(new String[]{ "manifest.json", "popup.js", "popup.html", "icon.png" }), isNull(String[].class));
+        verify(archiver).setDestFile(any(File.class));
+        verify(archiver).createArchive();
+        verify(artifact).setFile(any(File.class));
+    }
+
+    /**
+     * Verify that the {@link CRXMojo} handles exclusion rules.
+     *
+     * @throws Exception If there was an unexpected exception.
+     */
+    @Test
+    public void testWithExcludes() throws Exception {
+        setVariableValueInObject(mojo, PACKAGING_EXCLUDES_FIELD, "WEB-INF/**");
+        mojo.execute();
+        verify(archiver).setPemFile(any(File.class));
+        verify(archiver).setPemPassword(isNull(String.class));
+        verify(archiver).addDirectory(any(File.class), isNull(String[].class), aryEq(new String[]{ "WEB-INF/**" }));
+        verify(archiver).setDestFile(any(File.class));
+        verify(archiver).createArchive();
+        verify(artifact).setFile(any(File.class));
+    }
+
+    /**
+     * Verify that the {@link CRXMojo} handles inclusion and exclusion rules.
+     *
+     * @throws Exception If there was an unexpected exception.
+     */
+    @Test
+    public void testWithIncludesAndExcludes() throws Exception {
+        setVariableValueInObject(mojo, PACKAGING_INCLUDES_FIELD, "manifest.json,popup.js,popup.html,icon.png");
+        setVariableValueInObject(mojo, PACKAGING_EXCLUDES_FIELD, "WEB-INF/**");
+        mojo.execute();
+        verify(archiver).setPemFile(any(File.class));
+        verify(archiver).setPemPassword(isNull(String.class));
+        verify(archiver).addDirectory(any(File.class),
+                aryEq(new String[]{ "manifest.json", "popup.js", "popup.html", "icon.png" }),
+                aryEq(new String[]{ "WEB-INF/**" }));
+        verify(archiver).setDestFile(any(File.class));
+        verify(archiver).createArchive();
+        verify(artifact).setFile(any(File.class));
     }
 }
