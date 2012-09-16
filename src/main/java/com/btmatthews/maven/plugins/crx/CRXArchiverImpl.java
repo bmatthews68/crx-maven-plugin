@@ -16,10 +16,20 @@
 
 package com.btmatthews.maven.plugins.crx;
 
-import java.io.*;
+import java.io.ByteArrayOutputStream;
+import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.Reader;
 import java.security.GeneralSecurityException;
+import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.NoSuchAlgorithmException;
+import java.security.PublicKey;
 import java.security.Security;
+import java.security.interfaces.RSAPrivateCrtKey;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.RSAPublicKeySpec;
 import java.util.zip.Deflater;
 
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -158,13 +168,29 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
                     pemReader = new PEMReader(pemFileReader, passwordFinder);
                 }
                 try {
-                    return (KeyPair)pemReader.readObject();
+                    final Object pemObject = pemReader.readObject();
+                    if (pemObject instanceof KeyPair) {
+                        return (KeyPair)pemObject;
+                    } else if (pemObject instanceof RSAPrivateCrtKey) {
+                        final RSAPrivateCrtKey privateCrtKey = (RSAPrivateCrtKey)pemObject;
+                        final RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(privateCrtKey.getPublicExponent()
+                                , privateCrtKey.getModulus());
+                        final KeyFactory keyFactory = KeyFactory.getInstance(privateCrtKey.getAlgorithm());
+                        final PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
+                        return new KeyPair(publicKey, privateCrtKey);
+                    } else {
+                        throw new ArchiverException("Could not load the public/private key from invalid PEM file");
+                    }
                 } finally {
                     pemReader.close();
                 }
             } finally {
                 pemFileReader.close();
             }
+        } catch (final InvalidKeySpecException e) {
+            throw new ArchiverException("Cannot generate RSA public key", e);
+        } catch (final NoSuchAlgorithmException e) {
+            throw new ArchiverException("RSA Private key algorithm is not supported", e);
         } catch (final IOException e) {
             throw new ArchiverException("Could not load the public/private key from the PEM file", e);
         }
