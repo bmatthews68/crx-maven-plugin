@@ -74,12 +74,14 @@ approach is not recommended because it means specifying the password in plain te
 Another approach is to define the **crxPEMFile** and **crxPEMPassword** properties on the Maven command line. This
 approach can be used to override properties defined in settings.xml.
 
-> $ mvn -DcrxPEMFile=<path> [-DcrxPEMPassword=<password>] <goals>
->
-> where:
-> <path> is the location of the .pem file, e.g. ~/crx.pem
-> <password> is the password used to secure the .pem file, e.g. SparkleAndFade
-> <goals> are the Maven goals being executed, e.g. install
+```
+$ mvn -DcrxPEMFile=<path> [-DcrxPEMPassword=<password>] <goals>
+
+where:
+<path> is the location of the .pem file, e.g. ~/crx.pem
+<password> is the password used to secure the .pem file, e.g. SparkleAndFade
+<goals> are the Maven goals being executed, e.g. install
+```
 
 Using the crx packaging type
 ----------------------------
@@ -107,25 +109,27 @@ This is the CRX archive.</td>
 <td>The CRX archive file is deployed to the remote release or snapshot
 [repository](http://maven.apache.org/guides/introduction/introduction-to-repositories.html).</td></tr>
 </tbody>
-</thead>
+</table>
 
 The [Hello World](http://code.google.com/chrome/extensions/examples/tutorials/getstarted.zip) project described in
 the Getting Started tutorial on the Google Chrome Extensions site is used as the basis for the following example.
 
-The resources for the Google Chrome Extension project should be placed in the **src/main/chrome** sub-directory
+The resources for the **Google Chrome Extension** project should be placed in the **src/main/chrome** sub-directory
 as illustrated below:
 
-> HelloWorld
-> +- pom.xml
-> +- src
-> |  +- main
-> |     +- chrome
-> |        +- manifest.json
-> |        +- icon.png
-> |        +- popup.html
-> |        +- popup.js
-> +- target
->    +- HelloWorld-1.0.0-SNAPSHOT.crx
+```
+HelloWorld
++- pom.xml
++- src
+|  +- main
+|     +- chrome
+|        +- manifest.json
+|        +- icon.png
+|        +- popup.html
+|        +- popup.js
++- target
+   +- HelloWorld-1.0.0-SNAPSHOT.crx
+```
 
 The **pom.xml** should be as follows:
 
@@ -148,15 +152,19 @@ The **pom.xml** should be as follows:
 </project>
 ```
 
-The <extensions>true</extensions> element is required in the POM or one of its ancestors inorder to activate the crx packaging type.
+The **&lt;extensions&gt;true&lt;/extensions&gt;** element is required in the **POM** or one of its ancestors in order
+to activate the **crx** packaging type.
 
-The following command line will produce the HelloWord-1.0.0-SNAPSHOT.crx artifact in the target sub-directory:
+The following command line will produce the **HelloWord-1.0.0-SNAPSHOT.crx** artifact in the **target** sub-directory:
 
+```
 $ mvn -DcrxPEMFile=~/crx.pem -DcrxPEMPassword=SparkleAndFade package
+```
 
-Using the crx:crx goal
+### Using the crx:crx goal
 
-As with the previous example the resources for the Google Chrome Extension project should be placed in the src/main/chrome sub-directory as illustrated below:
+As with the previous example the resources for the **Google Chrome Extension** project should be placed in the
+**src/main/chrome** sub-directory as illustrated below:
 
 ```
 HelloWorld
@@ -198,7 +206,7 @@ The **pom.xml** should be similar to the following:
 </project>
 ```
 
-The following command line will produce the HelloWord-1.0.0-SNAPSHOT.crx artifact in the target sub-directory:
+The following command line will produce the **HelloWord-1.0.0-SNAPSHOT.crx** artifact in the **target** sub-directory:
 
 ```
 $ mvn -DcrxPEMFile=~/crx.pem -DcrxPEMPassword=SparkleAndFade crx:crx
