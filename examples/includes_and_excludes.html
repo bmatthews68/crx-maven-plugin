@@ -3,13 +3,15 @@
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-    <title>CRX Maven Plugin - CPD Results</title>
+    <title>CRX Maven Plugin - Including and excluding resources</title>
     <style type="text/css" media="all">
-      @import url("./css/maven-base.css");
-      @import url("./css/maven-theme.css");
-      @import url("./css/site.css");
+      @import url("../css/maven-base.css");
+      @import url("../css/maven-theme.css");
+      @import url("../css/site.css");
     </style>
-    <link rel="stylesheet" href="./css/print.css" type="text/css" media="print" />
+    <link rel="stylesheet" href="../css/print.css" type="text/css" media="print" />
+      <meta name="author" content="Brian Matthews" />
+    <meta name="Date-Creation-yyyymmdd" content="20120727" />
     <meta name="Date-Revision-yyyymmdd" content="20120918" />
     <meta http-equiv="Content-Language" content="en" />
         
@@ -30,7 +32,7 @@
     </head>
   <body class="composite">
     <div id="banner">
-                                      <a href="./" id="bannerLeft">
+                                      <a href=".././" id="bannerLeft">
                 CRX Maven Plugin
                 </a>
                     <div class="clear">
@@ -61,67 +63,35 @@
                                 <h5>Overview</h5>
                   <ul>
                   <li class="none">
-                          <a href="index.html" title="Introduction">Introduction</a>
+                          <a href="../index.html" title="Introduction">Introduction</a>
             </li>
                   <li class="none">
-                          <a href="plugin-info.html" title="Goals">Goals</a>
+                          <a href="../plugin-info.html" title="Goals">Goals</a>
             </li>
                   <li class="none">
-                          <a href="usage.html" title="Usage">Usage</a>
+                          <a href="../usage.html" title="Usage">Usage</a>
             </li>
           </ul>
                        <h5>Examples</h5>
                   <ul>
                   <li class="none">
-                          <a href="examples/packaging.html" title="Using the crx packaging type">Using the crx packaging type</a>
+                          <a href="../examples/packaging.html" title="Using the crx packaging type">Using the crx packaging type</a>
             </li>
                   <li class="none">
-                          <a href="examples/goal.html" title="Using the crx:crx goal">Using the crx:crx goal</a>
+                          <a href="../examples/goal.html" title="Using the crx:crx goal">Using the crx:crx goal</a>
             </li>
                   <li class="none">
-                          <a href="examples/includes_and_excludes.html" title="Including and excluding resources">Including and excluding resources</a>
-            </li>
+            <strong>Including and excluding resources</strong>
+          </li>
           </ul>
                        <h5>Project Documentation</h5>
                   <ul>
                                                                                                                                                                                                                                                                                             <li class="collapsed">
-                          <a href="project-info.html" title="Project Information">Project Information</a>
+                          <a href="../project-info.html" title="Project Information">Project Information</a>
                   </li>
-                                                                                                                                                                                                                                                <li class="expanded">
-                          <a href="project-reports.html" title="Project Reports">Project Reports</a>
-                    <ul>
-                      <li class="none">
-                          <a href="checkstyle.html" title="Checkstyle">Checkstyle</a>
-            </li>
-                      <li class="none">
-                          <a href="pmd.html" title="PMD Report">PMD Report</a>
-            </li>
-                      <li class="none">
-            <strong>CPD Report</strong>
-          </li>
-                      <li class="none">
-                          <a href="cobertura/index.html" title="Cobertura Test Coverage">Cobertura Test Coverage</a>
-            </li>
-                      <li class="none">
-                          <a href="xref/index.html" title="Source Xref">Source Xref</a>
-            </li>
-                      <li class="none">
-                          <a href="xref-test/index.html" title="Test Source Xref">Test Source Xref</a>
-            </li>
-                      <li class="none">
-                          <a href="testapidocs/index.html" title="Test JavaDocs">Test JavaDocs</a>
-            </li>
-                      <li class="none">
-                          <a href="apidocs/index.html" title="JavaDocs">JavaDocs</a>
-            </li>
-                      <li class="none">
-                          <a href="surefire-report.html" title="Surefire Report">Surefire Report</a>
-            </li>
-                      <li class="none">
-                          <a href="plugin-info.html" title="Plugin Documentation">Plugin Documentation</a>
-            </li>
-              </ul>
-        </li>
+                                                                                                                                                                                                                                      <li class="collapsed">
+                          <a href="../project-reports.html" title="Project Reports">Project Reports</a>
+                  </li>
           </ul>
                                                                                                                                <a href="http://maven.apache.org/" title="Maven" class="poweredBy">
         <img class="poweredBy"  alt="Maven" src="http://maven.apache.org/images/logos/maven-feather.png"     />
@@ -132,7 +102,7 @@
     </div>
     <div id="bodyColumn">
       <div id="contentBox">
-        <div class="section"><h2>CPD Results<a name="CPD_Results"></a></h2><p>The following document contains the results of PMD's  <a class="externalLink" href="http://pmd.sourceforge.net/cpd.html">CPD</a> 4.3.</p></div><div class="section"><h2>Duplications<a name="Duplications"></a></h2><p>CPD found no problems in your source code.</p></div>
+        <!-- Copyright 2012 Brian Matthews --><!--  --><!-- Licensed under the Apache License, Version 2.0 (the "License"); --><!-- you may not use this file except in compliance with the License. --><!-- You may obtain a copy of the License at --><!--  --><!-- http://www.apache.org/licenses/LICENSE-2.0 --><!--  --><!-- Unless required by applicable law or agreed to in writing, software --><!-- distributed under the License is distributed on an "AS IS" BASIS, --><!-- WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. --><!-- See the License for the specific language governing permissions and --><!-- limitations under the License. --><div class="section"><h2>Including and excluding resources<a name="Including_and_excluding_resources"></a></h2><p>In this example the Google Chrome Extension is embedded in the exploded for +---------------------------------------+ <i>project</i> <i>groupId</i>com.btmatthews.crx<i>/groupId</i> <i>artifactId</i>HelloWord<i>/artifactId</i> <i>version</i>1.0.0-SNAPSHOT<i>/version</i> <i>packaging</i>war<i>/packaging</i> <i>build</i> <i>plugins</i> <i>plugin</i> <i>groupId</i>com.btmatthews.maven.plugins<i>/groupId</i> <i>artifactId</i>crx-maven-plugin<i>/artifactId</i> <i>version</i>1.1.1<i>/version</i> <i>executions</i> <i>execution</i> <i>id</i>package-crx<i>/id</i> <i>goals</i> <i>goal</i>crx<i>/goal</i> <i>/goals</i> <i>phase</i>package<i>/phase</i> <i>configuration</i> <i>crxSourceDirectory</i>$<a name="basedir">basedir</a>/src/main/webapp<i>/crxSourceDirectory</i> <i>packagingExcludes</i>**/*<i>/packagingExcludes</i> <i>packagingIncludes</i>manifest.json,popup.html,popup.js,icon.png<i>/packagingIncludes</i> <i>/configuration</i> <i>/execution</i> <i>/executions</i> <i>/plugin</i> <i>/plugins</i> <i>/build</i> <i>/project</i> +---------------------------------------+</p></div>
       </div>
     </div>
     <div class="clear">

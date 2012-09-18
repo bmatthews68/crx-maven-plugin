@@ -8,7 +8,7 @@
     <language>en-us</language>
     <copyright>&#169;2012 Brian Matthews</copyright>
     <item>
-      <title>File: 11,
+      <title>File: 12,
              Errors: 0,
              Warnings: 22,
              Infos: 0
@@ -35,7 +35,7 @@
                   0
                 </td>
                 <td>
-                  1
+                  0
                 </td>
                 <td>
                   0
@@ -162,6 +162,20 @@
                 </td>
                 <td>
                   0
+                </td>
+                <td>
+                  0
+                </td>
+              </tr>
+                          <tr>
+                <td>
+                  <a href="http://crx-maven-plugin.btmatthews.com/checkstyle.html#com.btmatthews.maven.plugins.crx.ParameterUtils.java">com/btmatthews/maven/plugins/crx/ParameterUtils.java</a>
+                </td>
+                <td>
+                  0
+                </td>
+                <td>
+                  1
                 </td>
                 <td>
                   0
