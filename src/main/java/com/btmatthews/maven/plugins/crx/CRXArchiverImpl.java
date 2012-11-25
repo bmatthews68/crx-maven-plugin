@@ -21,10 +21,12 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
+import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PublicKey;
 import java.security.Security;
 import java.security.interfaces.RSAPrivateCrtKey;
@@ -173,9 +175,10 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
                         return (KeyPair)pemObject;
                     } else if (pemObject instanceof RSAPrivateCrtKey) {
                         final RSAPrivateCrtKey privateCrtKey = (RSAPrivateCrtKey)pemObject;
-                        final RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(privateCrtKey.getPublicExponent()
-                                , privateCrtKey.getModulus());
-                        final KeyFactory keyFactory = KeyFactory.getInstance(privateCrtKey.getAlgorithm());
+                        final BigInteger exponent = privateCrtKey.getPublicExponent();
+                        final BigInteger modulus = privateCrtKey.getModulus();
+                        final RSAPublicKeySpec publicKeySpec = new RSAPublicKeySpec(modulus, exponent);
+                        final KeyFactory keyFactory = KeyFactory.getInstance("RSA", "BC");
                         final PublicKey publicKey = keyFactory.generatePublic(publicKeySpec);
                         return new KeyPair(publicKey, privateCrtKey);
                     } else {
@@ -191,6 +194,8 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
             throw new ArchiverException("Cannot generate RSA public key", e);
         } catch (final NoSuchAlgorithmException e) {
             throw new ArchiverException("RSA Private key algorithm is not supported", e);
+        } catch (final NoSuchProviderException e) {
+            throw new ArchiverException("Bouncy Castle not registered correctly", e);
         } catch (final IOException e) {
             throw new ArchiverException("Could not load the public/private key from the PEM file", e);
         }
