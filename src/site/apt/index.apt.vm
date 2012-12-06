@@ -31,6 +31,7 @@ Overview
 
   * {{{./crx-mojo.html}crx:crx}} is the default goal invoked during the packaging phase for projects with a packaging
   type of crx. It builds the signed CRX archive.
+
   * {{{./crx-verify-mojo.html}crx:crx-verify}} is invoked during the verification phase for projects with a packaging
   type of crx. IT verifies the integrity of the CRX archive.
 

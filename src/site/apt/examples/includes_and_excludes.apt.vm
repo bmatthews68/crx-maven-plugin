@@ -23,6 +23,7 @@
 Including and excluding resources
 
   In this example the Google Chrome Extension is embedded in the exploded for
+
 +---------------------------------------+
 <project>
   <groupId>com.btmatthews.crx</groupId>
