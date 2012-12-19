@@ -18,7 +18,9 @@ package com.btmatthews.maven.plugins.crx;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.List;
 
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.AbstractMojo;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.plugin.MojoFailureException;
@@ -28,7 +30,12 @@ import org.apache.maven.plugins.annotations.Mojo;
 import org.apache.maven.plugins.annotations.Parameter;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.shared.filtering.MavenFileFilter;
+import org.apache.maven.shared.filtering.MavenFilteringException;
+import org.apache.maven.shared.filtering.MavenResourcesExecution;
+import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.codehaus.plexus.archiver.ArchiverException;
+import org.codehaus.plexus.util.FileUtils;
 import org.codehaus.plexus.util.StringUtils;
 
 /**
@@ -90,6 +97,30 @@ public class CRXMojo extends AbstractMojo {
     private String classifier;
 
     /**
+     * Specify that the CRX sources should be filtered.
+     *
+     * @since 1.2.0
+     */
+    @Parameter(defaultValue = "false")
+    private boolean filtering;
+
+    /**
+     * Filters (property files) to include during the interpolation of the pom.xml.
+     *
+     * @since 1.2.0
+     */
+    @Parameter
+    private List filters;
+
+    /**
+     * A list of file extensions that should not be filtered if filtering is enabled.
+     *
+     * @since 1.2.0
+     */
+    @Parameter
+    private List nonFilteredFileExtensions;
+
+    /**
      * The Maven project.
      */
     @Parameter(defaultValue = "${project}", readonly = true, required = true)
@@ -106,6 +137,37 @@ public class CRXMojo extends AbstractMojo {
      */
     @Component(role = CRXArchiver.class, hint = "crx")
     private CRXArchiver crxArchiver;
+
+    /**
+     * Used to copy the file with resource filtering.
+     *
+     * @since 1.2.0
+     */
+    @Component(role = MavenFileFilter.class, hint = "default")
+    private MavenFileFilter mavenFileFilter;
+
+    /**
+     * Used to perform the file filtering.
+     *
+     * @since 1.2.0
+     */
+    @Component(role = MavenResourcesFiltering.class, hint = "default")
+    private MavenResourcesFiltering mavenResourcesFiltering;
+
+    /**
+     * The current Maven session.
+     *
+     * @since 1.2.0
+     */
+    @Component
+    private MavenSession session;
+
+    /**
+     * File filtering wrappers.
+     *
+     * @since 1.2.0
+     */
+    private List filterWrappers;
 
     /**
      * Called when the Maven plug-in is executing. It creates an in-memory ZIP file of all the Chrome Extension
@@ -133,7 +195,10 @@ public class CRXMojo extends AbstractMojo {
             crxFilename.append('-');
             crxFilename.append(classifier);
         }
+        final File crxDirectory = new File(outputDirectory, crxFilename.toString());
         crxFilename.append(".crx");
+
+        copyFiles(crxSourceDirectory, crxDirectory);
 
         // Generate the CRX file
 
@@ -143,7 +208,7 @@ public class CRXMojo extends AbstractMojo {
 
         crxArchiver.setPemFile(pemFile);
         crxArchiver.setPemPassword(pemPassword);
-        crxArchiver.addDirectory(crxSourceDirectory, includes, excludes);
+        crxArchiver.addDirectory(crxDirectory, includes, excludes);
         crxArchiver.setDestFile(crxFile);
 
         try {
@@ -161,5 +226,72 @@ public class CRXMojo extends AbstractMojo {
         } else {
             project.getArtifact().setFile(crxFile);
         }
+    }
+
+    /**
+     * Recursively copy from a source directory to a destination directory applying resource filtering if necessary.
+     *
+     * @param source      The source directory.
+     * @param destination The destination directory.
+     * @throws MojoExecutionException If there was an error during the recursive copying or filtering.
+     * @since 1.2.0
+     */
+    private void copyFiles(final File source, final File destination) throws MojoExecutionException {
+        try {
+            if (!destination.exists() && !destination.mkdirs()) {
+                throw new MojoExecutionException("Could not create directory: " + destination.getAbsolutePath());
+            }
+            for (final File sourceItem : source.listFiles()) {
+                final File destinationItem = new File(destination, sourceItem.getName());
+                if (sourceItem.isDirectory()) {
+                    copyFiles(sourceItem, destinationItem);
+                } else {
+                    if (filtering && !isNonFilteredExtension(sourceItem.getName())) {
+                        mavenFileFilter.copyFile(sourceItem, destinationItem, true, getFilterWrappers(), null);
+                    } else {
+                        FileUtils.copyFile(sourceItem, destinationItem);
+                    }
+                }
+            }
+        } catch (final MavenFilteringException e) {
+            throw new MojoExecutionException("Failed to build filtering wrappers", e);
+        } catch (final IOException e) {
+            throw new MojoExecutionException("Error copying file: " + source.getAbsolutePath(), e);
+        }
+    }
+
+    /**
+     * Determine whether the file name should be filtered or not based on the list of excluded file extensions.
+     *
+     * @param fileName The file name.
+     * @return {@code true} if the file extension is not excluded and the file should be filtered. Otherwise {@code
+     *         false}.
+     * @throws MojoExecutionException If there was an error determining whether the file name should be filtered.
+     * @since 1.2.0
+     */
+    private boolean isNonFilteredExtension(final String fileName) throws MojoExecutionException {
+        return !mavenResourcesFiltering.filteredFileExtension(fileName, nonFilteredFileExtensions);
+    }
+
+    /**
+     * Build a list of filter wrappers.
+     *
+     * @return The list of filter wrappers.
+     * @throws MojoExecutionException If there was a problem building the list of filter wrappers.
+     * @since 1.2.0
+     */
+    private List getFilterWrappers()
+            throws MojoExecutionException {
+        if (filterWrappers == null) {
+            try {
+                final MavenResourcesExecution mavenResourcesExecution = new MavenResourcesExecution();
+                mavenResourcesExecution.setEscapeString("\\");
+                filterWrappers = mavenFileFilter.getDefaultFilterWrappers(project, filters, true, session,
+                        mavenResourcesExecution);
+            } catch (final MavenFilteringException e) {
+                throw new MojoExecutionException("Failed to build filtering wrappers: " + e.getMessage(), e);
+            }
+        }
+        return filterWrappers;
     }
 }

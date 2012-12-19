@@ -21,17 +21,22 @@ import static org.mockito.AdditionalMatchers.aryEq;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
-import static org.mockito.Mockito.*;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.isNull;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 import java.io.File;
 import java.io.IOException;
 
 import org.apache.maven.artifact.Artifact;
+import org.apache.maven.execution.MavenSession;
 import org.apache.maven.plugin.MojoExecutionException;
 import org.apache.maven.project.MavenProject;
 import org.apache.maven.project.MavenProjectHelper;
+import org.apache.maven.shared.filtering.MavenFileFilter;
+import org.apache.maven.shared.filtering.MavenResourcesFiltering;
 import org.codehaus.plexus.archiver.ArchiverException;
 import org.junit.Before;
 import org.junit.Rule;
@@ -127,6 +132,24 @@ public class TestMojo {
     private MavenProjectHelper projectHelper;
 
     /**
+     * Mock the Maven component used copy and filter files.
+     */
+    @Mock
+    private MavenFileFilter mavenFileFilter;
+
+    /**
+     * Mock the Maven component used copy and filter resources.
+     */
+    @Mock
+    private MavenResourcesFiltering mavenResourcesFiltering;
+
+    /**
+     * Mock the Maven component that contains the current Maven session.
+     */
+    @Mock
+    private MavenSession session;
+
+    /**
      * The mock {@link CRXArchiver} that would be used to output the CRX archiver.
      */
     @Mock
@@ -143,6 +166,9 @@ public class TestMojo {
         initMocks(this);
         mojo = new CRXMojo();
         when(project.getArtifact()).thenReturn(artifact);
+        setVariableValueInObject(mojo, "mavenFileFilter", mavenFileFilter);
+        setVariableValueInObject(mojo, "mavenResourcesFiltering", mavenResourcesFiltering);
+        setVariableValueInObject(mojo, "session", session);
         setVariableValueInObject(mojo, OUTPUT_DIRECTORY_FIELD, outputDirectory.getRoot());
         setVariableValueInObject(mojo, PROJECT_FIELD, project);
         setVariableValueInObject(mojo, PROJECT_HELPER_FIELD, projectHelper);
@@ -159,6 +185,23 @@ public class TestMojo {
      */
     @Test
     public void testMojo() throws Exception {
+        mojo.execute();
+        verify(archiver).setPemFile(any(File.class));
+        verify(archiver).setPemPassword(isNull(String.class));
+        verify(archiver).addDirectory(any(File.class), isNull(String[].class), isNull(String[].class));
+        verify(archiver).setDestFile(any(File.class));
+        verify(archiver).createArchive();
+        verify(artifact).setFile(any(File.class));
+    }
+
+    /**
+     * Verify that a .crx file can be created with file filtering enabled.
+     *
+     * @throws Exception If there was an unexpected error during the test case execution.
+     */
+    @Test
+    public void testMojoWithFiltering() throws Exception {
+        setVariableValueInObject(mojo, "filtering", Boolean.TRUE);
         mojo.execute();
         verify(archiver).setPemFile(any(File.class));
         verify(archiver).setPemPassword(isNull(String.class));

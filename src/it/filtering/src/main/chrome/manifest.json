@@ -1,0 +1,13 @@
+{
+	"name": "${project.name}",
+	"version": "${project.version}",
+	"manifest_version": 2,
+	"decription": "Hello World!",
+	"browser_action": {
+		"default_icon": "icon.png",
+		"default_popup": "popup.html"
+	},
+	"permissions": [
+		"http://api.flickr.com/"
+	]
+}
