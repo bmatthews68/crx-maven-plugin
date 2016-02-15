@@ -222,7 +222,7 @@ The **CRX Maven Plugin** has been published in [Maven Central](http://search.mav
 <plugin>
     <groupId>com.btmatthews.maven.plugins</groupId>
     <artifactId>crx-maven-plugin</artifactId>
-    <version>1.2.1</version>
+    <version>1.2.0</version>
 </plugin
 ```
 
