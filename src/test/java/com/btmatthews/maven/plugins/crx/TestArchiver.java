@@ -54,6 +54,8 @@ public class TestArchiver {
 
     /**
      * Initialise the unit tests.
+     *
+     * @throws Exception If there was an error during test setup.
      */
     @Before
     public void setUp() throws Exception {
