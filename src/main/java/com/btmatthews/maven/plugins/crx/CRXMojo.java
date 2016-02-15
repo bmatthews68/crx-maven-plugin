@@ -159,7 +159,7 @@ public class CRXMojo extends AbstractMojo {
      *
      * @since 1.2.0
      */
-    @Component
+    @Parameter(defaultValue = "${session}", readonly = true)
     private MavenSession session;
 
     /**
@@ -177,7 +177,6 @@ public class CRXMojo extends AbstractMojo {
      * @throws MojoExecutionException If there was an error that should stop the build.
      * @throws MojoFailureException   If there was an error but the build might be allowed to continue.
      */
-    @Override
     public final void execute() throws MojoExecutionException, MojoFailureException {
 
         // Make sure we have a manifest file for the CRX
@@ -265,7 +264,7 @@ public class CRXMojo extends AbstractMojo {
      *
      * @param fileName The file name.
      * @return {@code true} if the file extension is not excluded and the file should be filtered. Otherwise {@code
-     *         false}.
+     * false}.
      * @throws MojoExecutionException If there was an error determining whether the file name should be filtered.
      * @since 1.2.0
      */
