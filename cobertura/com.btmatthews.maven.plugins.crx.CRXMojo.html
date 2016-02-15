@@ -339,7 +339,7 @@
 <tr>  <td class="numLine">&nbsp;161</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;162</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    @Component</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    @Parameter(defaultValue = <span class="string">"${session}"</span>, readonly = <span class="keyword">true</span>)</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;163</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> MavenSession session;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;164</td>  <td class="nbHits">&nbsp;</td>
@@ -375,191 +375,189 @@
 <tr>  <td class="numLine">&nbsp;179</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;180</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    @Override</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;181</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">public</span> <span class="keyword">final</span> <span class="keyword">void</span> execute() <span class="keyword">throws</span> MojoExecutionException, MojoFailureException {</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;181</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;182</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Make sure we have a manifest file for the CRX</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;184</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;183</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;185</td>  <td class="nbHitsCovered">&nbsp;10</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> File manifestFile = <span class="keyword">new</span> File(crxSourceDirectory, <span class="string">"manifest.json"</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;186</td>  <td class="nbHitsCovered"><a title="Line 186: Conditional coverage 100% (2/2).">&nbsp;10</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 186: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (!manifestFile.exists()) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;187</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Missing manifest.json file"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;184</td>  <td class="nbHitsCovered">&nbsp;10</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> File manifestFile = <span class="keyword">new</span> File(crxSourceDirectory, <span class="string">"manifest.json"</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;185</td>  <td class="nbHitsCovered"><a title="Line 185: Conditional coverage 100% (2/2).">&nbsp;10</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 185: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (!manifestFile.exists()) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;186</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Missing manifest.json file"</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;187</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;188</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;189</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;190</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Generate CRX file name</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;191</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;190</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;192</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> StringBuilder crxFilename = <span class="keyword">new</span> StringBuilder();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;193</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxFilename.append(finalName);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;194</td>  <td class="nbHitsCovered"><a title="Line 194: Conditional coverage 100% (2/2).">&nbsp;9</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 194: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (StringUtils.isNotEmpty(classifier)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            crxFilename.append(<span class="string">'-'</span>);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;196</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            crxFilename.append(classifier);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;197</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;191</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> StringBuilder crxFilename = <span class="keyword">new</span> StringBuilder();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;192</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxFilename.append(finalName);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;193</td>  <td class="nbHitsCovered"><a title="Line 193: Conditional coverage 100% (2/2).">&nbsp;9</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 193: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (StringUtils.isNotEmpty(classifier)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;194</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            crxFilename.append(<span class="string">'-'</span>);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;195</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            crxFilename.append(classifier);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;196</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> File crxDirectory = <span class="keyword">new</span> File(outputDirectory, crxFilename.toString());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;199</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxFilename.append(<span class="string">".crx"</span>);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;200</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;197</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> File crxDirectory = <span class="keyword">new</span> File(outputDirectory, crxFilename.toString());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;198</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxFilename.append(<span class="string">".crx"</span>);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;199</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;201</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        copyFiles(crxSourceDirectory, crxDirectory);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;200</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        copyFiles(crxSourceDirectory, crxDirectory);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;201</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;202</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;203</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Generate the CRX file</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;204</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;203</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;205</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> File crxFile = <span class="keyword">new</span> File(outputDirectory, crxFilename.toString());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;206</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> String[] includes = ParameterUtils.splitParameter(packagingIncludes);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;207</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> String[] excludes = ParameterUtils.splitParameter(packagingExcludes);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;208</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;204</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> File crxFile = <span class="keyword">new</span> File(outputDirectory, crxFilename.toString());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;205</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> String[] includes = ParameterUtils.splitParameter(packagingIncludes);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;206</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        <span class="keyword">final</span> String[] excludes = ParameterUtils.splitParameter(packagingExcludes);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;207</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;209</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxArchiver.setPemFile(pemFile);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;210</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxArchiver.setPemPassword(pemPassword);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;211</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxArchiver.addDirectory(crxDirectory, includes, excludes);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;212</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxArchiver.setDestFile(crxFile);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;208</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxArchiver.setPemFile(pemFile);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;209</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxArchiver.setPemPassword(pemPassword);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;210</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxArchiver.addDirectory(crxDirectory, includes, excludes);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;211</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        crxArchiver.setDestFile(crxFile);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;212</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;213</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;214</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;215</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;            crxArchiver.createArchive();</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;216</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (<span class="keyword">final</span> IOException e) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;217</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Failed to package and sign the Google Chrome Extension"</span>, e);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;218</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (<span class="keyword">final</span> ArchiverException e) {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;219</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(e.getMessage(), e);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;220</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;214</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;            crxArchiver.createArchive();</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;215</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (<span class="keyword">final</span> IOException e) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;216</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Failed to package and sign the Google Chrome Extension"</span>, e);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;217</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;        } <span class="keyword">catch</span> (<span class="keyword">final</span> ArchiverException e) {</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;218</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(e.getMessage(), e);</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;219</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;220</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;221</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;222</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="comment">// Attach the artifact to the build life-cycle</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;223</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;222</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;224</td>  <td class="nbHitsCovered"><a title="Line 224: Conditional coverage 100% (2/2).">&nbsp;7</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 224: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (StringUtils.isNotEmpty(classifier)) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;225</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            projectHelper.attachArtifact(project, <span class="string">"crx"</span>, classifier, crxFile);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;226</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;223</td>  <td class="nbHitsCovered"><a title="Line 223: Conditional coverage 100% (2/2).">&nbsp;7</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 223: Conditional coverage 100% (2/2).">        <span class="keyword">if</span> (StringUtils.isNotEmpty(classifier)) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;224</td>  <td class="nbHitsCovered">&nbsp;1</td>  <td class="src"><pre class="src">&nbsp;            projectHelper.attachArtifact(project, <span class="string">"crx"</span>, classifier, crxFile);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;225</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        } <span class="keyword">else</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;227</td>  <td class="nbHitsCovered">&nbsp;6</td>  <td class="src"><pre class="src">&nbsp;            project.getArtifact().setFile(crxFile);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;228</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;226</td>  <td class="nbHitsCovered">&nbsp;6</td>  <td class="src"><pre class="src">&nbsp;            project.getArtifact().setFile(crxFile);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;227</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;229</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;228</td>  <td class="nbHitsCovered">&nbsp;7</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;229</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;230</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;231</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;232</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Recursively copy from a source directory to a destination directory applying resource filtering if necessary.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;232</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;233</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;234</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param source      The source directory.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;235</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;234</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param destination The destination directory.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;236</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;235</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws MojoExecutionException If there was an error during the recursive copying or filtering.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;236</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @since 1.2.0</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;237</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @since 1.2.0</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;238</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;239</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">void</span> copyFiles(<span class="keyword">final</span> File source, <span class="keyword">final</span> File destination) <span class="keyword">throws</span> MojoExecutionException {</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;240</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;239</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;241</td>  <td class="nbHitsUncovered"><a title="Line 241: Conditional coverage 50% (2/4) [each condition: 50%, 50%].">&nbsp;9</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 241: Conditional coverage 50% (2/4) [each condition: 50%, 50%].">            <span class="keyword">if</span> (!destination.exists() &amp;&amp; !destination.mkdirs()) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;242</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Could not create directory: "</span> + destination.getAbsolutePath());</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;243</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;240</td>  <td class="nbHitsUncovered"><a title="Line 240: Conditional coverage 50% (2/4) [each condition: 50%, 50%].">&nbsp;9</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 240: Conditional coverage 50% (2/4) [each condition: 50%, 50%].">            <span class="keyword">if</span> (!destination.exists() &amp;&amp; !destination.mkdirs()) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;241</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Could not create directory: "</span> + destination.getAbsolutePath());</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;242</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;244</td>  <td class="nbHitsCovered"><a title="Line 244: Conditional coverage 100% (2/2).">&nbsp;45</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 244: Conditional coverage 100% (2/2).">            <span class="keyword">for</span> (<span class="keyword">final</span> File sourceItem : source.listFiles()) {</a></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;245</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">final</span> File destinationItem = <span class="keyword">new</span> File(destination, sourceItem.getName());</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;246</td>  <td class="nbHitsUncovered"><a title="Line 246: Conditional coverage 50% (1/2).">&nbsp;36</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 246: Conditional coverage 50% (1/2).">                <span class="keyword">if</span> (sourceItem.isDirectory()) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;247</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    copyFiles(sourceItem, destinationItem);</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;248</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;243</td>  <td class="nbHitsCovered"><a title="Line 243: Conditional coverage 100% (2/2).">&nbsp;45</a></td>  <td class="src"><pre class="src">&nbsp;<a title="Line 243: Conditional coverage 100% (2/2).">            <span class="keyword">for</span> (<span class="keyword">final</span> File sourceItem : source.listFiles()) {</a></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;244</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;                <span class="keyword">final</span> File destinationItem = <span class="keyword">new</span> File(destination, sourceItem.getName());</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;245</td>  <td class="nbHitsUncovered"><a title="Line 245: Conditional coverage 50% (1/2).">&nbsp;36</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 245: Conditional coverage 50% (1/2).">                <span class="keyword">if</span> (sourceItem.isDirectory()) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;246</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                    copyFiles(sourceItem, destinationItem);</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;247</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                } <span class="keyword">else</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;249</td>  <td class="nbHitsUncovered"><a title="Line 249: Conditional coverage 75% (3/4) [each condition: 100%, 50%].">&nbsp;36</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 249: Conditional coverage 75% (3/4) [each condition: 100%, 50%].">                    <span class="keyword">if</span> (filtering &amp;&amp; !isNonFilteredExtension(sourceItem.getName())) {</a></span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;250</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        mavenFileFilter.copyFile(sourceItem, destinationItem, <span class="keyword">true</span>, getFilterWrappers(), <span class="keyword">null</span>);</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;251</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;248</td>  <td class="nbHitsUncovered"><a title="Line 248: Conditional coverage 75% (3/4) [each condition: 100%, 50%].">&nbsp;36</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 248: Conditional coverage 75% (3/4) [each condition: 100%, 50%].">                    <span class="keyword">if</span> (filtering &amp;&amp; !isNonFilteredExtension(sourceItem.getName())) {</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;249</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                        mavenFileFilter.copyFile(sourceItem, destinationItem, <span class="keyword">true</span>, getFilterWrappers(), <span class="keyword">null</span>);</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;250</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    } <span class="keyword">else</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;252</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;                        FileUtils.copyFile(sourceItem, destinationItem);</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;253</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;251</td>  <td class="nbHitsCovered">&nbsp;36</td>  <td class="src"><pre class="src">&nbsp;                        FileUtils.copyFile(sourceItem, destinationItem);</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;252</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;254</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;253</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;255</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;254</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;256</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        } <span class="keyword">catch</span> (<span class="keyword">final</span> MavenFilteringException e) {</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;257</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Failed to build filtering wrappers"</span>, e);</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;258</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        } <span class="keyword">catch</span> (<span class="keyword">final</span> IOException e) {</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;259</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Error copying file: "</span> + source.getAbsolutePath(), e);</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;260</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;261</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;255</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        } <span class="keyword">catch</span> (<span class="keyword">final</span> MavenFilteringException e) {</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;256</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Failed to build filtering wrappers"</span>, e);</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;257</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        } <span class="keyword">catch</span> (<span class="keyword">final</span> IOException e) {</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;258</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Error copying file: "</span> + source.getAbsolutePath(), e);</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;259</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;260</td>  <td class="nbHitsCovered">&nbsp;9</td>  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
+<tr>  <td class="numLine">&nbsp;261</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;262</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;</pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;263</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;264</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Determine whether the file name should be filtered or not based on the list of excluded file extensions.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;264</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;265</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;266</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @param fileName The file name.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;267</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;266</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return {@code true} if the file extension is not excluded and the file should be filtered. Otherwise {@code</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;267</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * false}.</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;268</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     *         false}.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;269</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws MojoExecutionException If there was an error determining whether the file name should be filtered.</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;269</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @since 1.2.0</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;270</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     * @since 1.2.0</span></pre></td></tr>
+  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
 <tr>  <td class="numLine">&nbsp;271</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;272</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> <span class="keyword">boolean</span> isNonFilteredExtension(<span class="keyword">final</span> String fileName) <span class="keyword">throws</span> MojoExecutionException {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;273</td>  <td class="nbHitsUncovered"><a title="Line 273: Conditional coverage 50% (1/2).">&nbsp;4</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 273: Conditional coverage 50% (1/2).">        <span class="keyword">return</span> !mavenResourcesFiltering.filteredFileExtension(fileName, nonFilteredFileExtensions);</a></span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;272</td>  <td class="nbHitsUncovered"><a title="Line 272: Conditional coverage 50% (1/2).">&nbsp;4</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 272: Conditional coverage 50% (1/2).">        <span class="keyword">return</span> !mavenResourcesFiltering.filteredFileExtension(fileName, nonFilteredFileExtensions);</a></span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;273</td>  <td class="nbHits">&nbsp;</td>
+  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
 <tr>  <td class="numLine">&nbsp;274</td>  <td class="nbHits">&nbsp;</td>
-  <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;275</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;276</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;275</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="comment">/**</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;277</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;276</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * Build a list of filter wrappers.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;278</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;277</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     *</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;279</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;278</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @return The list of filter wrappers.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;280</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;279</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @throws MojoExecutionException If there was a problem building the list of filter wrappers.</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;281</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;280</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     * @since 1.2.0</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;282</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;281</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;<span class="comment">     */</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;283</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;282</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    <span class="keyword">private</span> List getFilterWrappers()</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;284</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;283</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">throws</span> MojoExecutionException {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;285</td>  <td class="nbHitsUncovered"><a title="Line 285: Conditional coverage 0% (0/2).">&nbsp;0</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 285: Conditional coverage 0% (0/2).">        <span class="keyword">if</span> (filterWrappers == <span class="keyword">null</span>) {</a></span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;286</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;284</td>  <td class="nbHitsUncovered"><a title="Line 284: Conditional coverage 0% (0/2).">&nbsp;0</a></td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;<a title="Line 284: Conditional coverage 0% (0/2).">        <span class="keyword">if</span> (filterWrappers == <span class="keyword">null</span>) {</a></span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;285</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;            <span class="keyword">try</span> {</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;287</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">final</span> MavenResourcesExecution mavenResourcesExecution = <span class="keyword">new</span> MavenResourcesExecution();</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;288</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                mavenResourcesExecution.setEscapeString(<span class="string">"\\"</span>);</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;289</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                filterWrappers = mavenFileFilter.getDefaultFilterWrappers(project, filters, <span class="keyword">true</span>, session,</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;290</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;286</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">final</span> MavenResourcesExecution mavenResourcesExecution = <span class="keyword">new</span> MavenResourcesExecution();</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;287</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                mavenResourcesExecution.setEscapeString(<span class="string">"\\"</span>);</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;288</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                filterWrappers = mavenFileFilter.getDefaultFilterWrappers(project, filters, <span class="keyword">true</span>, session,</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;289</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;                        mavenResourcesExecution);</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;291</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            } <span class="keyword">catch</span> (<span class="keyword">final</span> MavenFilteringException e) {</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Failed to build filtering wrappers: "</span> + e.getMessage(), e);</span></pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;293</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            }</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;294</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;290</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            } <span class="keyword">catch</span> (<span class="keyword">final</span> MavenFilteringException e) {</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;291</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;                <span class="keyword">throw</span> <span class="keyword">new</span> MojoExecutionException(<span class="string">"Failed to build filtering wrappers: "</span> + e.getMessage(), e);</span></pre></td></tr>
+<tr>  <td class="numLineCover">&nbsp;292</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;            }</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;293</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;        }</pre></td></tr>
-<tr>  <td class="numLineCover">&nbsp;295</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">return</span> filterWrappers;</span></pre></td></tr>
-<tr>  <td class="numLine">&nbsp;296</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLineCover">&nbsp;294</td>  <td class="nbHitsUncovered">&nbsp;0</td>  <td class="src"><pre class="src"><span class="srcUncovered">&nbsp;        <span class="keyword">return</span> filterWrappers;</span></pre></td></tr>
+<tr>  <td class="numLine">&nbsp;295</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;    }</pre></td></tr>
-<tr>  <td class="numLine">&nbsp;297</td>  <td class="nbHits">&nbsp;</td>
+<tr>  <td class="numLine">&nbsp;296</td>  <td class="nbHits">&nbsp;</td>
   <td class="src"><pre class="src">&nbsp;}</pre></td></tr>
 </table>
 
-<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 1.9.4.1 on 19/12/12 18:36.</div>
+<div class="footer">Report generated by <a href="http://cobertura.sourceforge.net/" target="_top">Cobertura</a> 2.1.1 on 15/02/16 03:02.</div>
 </body>
 </html>
