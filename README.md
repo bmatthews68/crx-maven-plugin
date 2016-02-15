@@ -1,6 +1,8 @@
 CRX Maven Plugin
 ================
 
+![Build Status](https://codeship.com/projects/f94fbeb0-b597-0133-d595-724fe1788ad4/status?branch=master)
+
 The [CRX Maven Plugin](http://crx-maven-plugin.btmatthews.com/) is a [Maven](http://maven.apache.org) plugin that
 collects all the resources of a [Google Chrome Extensions](http://code.google.com/chrome/extensions/index.html) and
 packages them into a signed [CRX](http://code.google.com/chrome/extensions/crx.html) archive.
