@@ -48,10 +48,23 @@ import org.codehaus.plexus.util.StringUtils;
 @Mojo(name = "crx", defaultPhase = LifecyclePhase.PACKAGE)
 public class CRXMojo extends AbstractMojo {
 
+    @Parameter(defaultValue = "${crxStoreType}", required = false)
+    private String storeType;
+    @Parameter(defaultValue = "${crxKeyAlias}", required = false)
+    private String alias;
+    @Parameter(defaultValue = "false", required = true)
+    private boolean skip;
+    
+    @Parameter(defaultValue = "${crxKeyStore}", required=false)
+    private File keyStore = null;
+    @Parameter(defaultValue = "${crxKeyStorePassword}", required=false)
+    private String keyStorePassword = null;
+    @Parameter(defaultValue = "${crxKeyPassword}", required=false)
+    private String keyPassword = null;
     /**
      * The PEM file containing the public/private key.
      */
-    @Parameter(defaultValue = "${crxPEMFile}", required = true)
+    @Parameter(defaultValue = "${crxPEMFile}", required = false)
     private File pemFile;
 
     /**
@@ -179,6 +192,10 @@ public class CRXMojo extends AbstractMojo {
      */
     public final void execute() throws MojoExecutionException, MojoFailureException {
 
+        if (skip) {
+            getLog().info("Skipping processing due to configuration");
+            return;
+        }
         // Make sure we have a manifest file for the CRX
 
         final File manifestFile = new File(crxSourceDirectory, "manifest.json");
@@ -205,6 +222,11 @@ public class CRXMojo extends AbstractMojo {
         final String[] includes = ParameterUtils.splitParameter(packagingIncludes);
         final String[] excludes = ParameterUtils.splitParameter(packagingExcludes);
 
+        crxArchiver.setAlias(alias);
+        crxArchiver.setStoreType(storeType);
+        crxArchiver.setKeyStore(keyStore);
+        crxArchiver.setKeyStorePass(keyStorePassword);
+        crxArchiver.setKeyPassword(keyPassword);
         crxArchiver.setPemFile(pemFile);
         crxArchiver.setPemPassword(pemPassword);
         crxArchiver.addDirectory(crxDirectory, includes, excludes);

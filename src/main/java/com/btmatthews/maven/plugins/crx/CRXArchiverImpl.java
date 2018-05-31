@@ -18,6 +18,7 @@ package com.btmatthews.maven.plugins.crx;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.IOException;
 import java.io.Reader;
@@ -71,6 +72,32 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     @Requirement(hint = "crx")
     private ArchiveHelper archiveHelper;
 
+    private String alias;
+    private String storeType;
+    private File keyStore;
+    private String keyStorePass;
+    private String keyPassword;
+    
+    public void setAlias(String alias) {
+        this.alias=alias;
+    }
+
+    public void setStoreType(String storeType) {
+        this.storeType = storeType;
+    }
+
+    public void setKeyStore(File keyStore) {
+        this.keyStore = keyStore;
+    }
+
+    public void setKeyStorePass(String keyStorePassword) {
+        this.keyStorePass = keyStorePassword;
+    }
+
+    public void setKeyPassword(String keyPassword) {
+        this.keyPassword = keyPassword;
+    }
+    
     /**
      * Used to inject the location of the .pem file containing the public/private key pair.
      *
@@ -150,11 +177,38 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     }
 
     /**
-     * Read the public/private key pair from a PEM file.
+     * Read the public/private key pair from a PEM, JKS or other keystore file.
      *
      * @return The public/private key pair.
      */
     private KeyPair getKeyPair() {
+        if (alias!=null) {
+            try{
+                KeyStore ks = KeyStore.getInstance(storeType == null ? "JKS" : storeType);
+                if (keyStore!=null && keyStore.exists()) {
+                    FileInputStream fis = null;
+                    try{
+                    fis = new FileInputStream(keyStore);
+                    ks.load(fis, keyStorePass==null ? null : keyStorePass.toCharArray());
+                    }catch (IOException e) {
+                        getLogger().warn("error trapped opening keystore, check password " + e.getMessage());
+                    } finally {
+                        try{
+                        fis.close();
+                        }catch (IOException ex) {}
+                    }
+                } else {
+                    //null for input stream is OK for windows cert store and for macos keychain
+                    ks.load(null, keyStorePass==null ? null : keyStorePass.toCharArray());
+                }
+                Key key = ks.getKey(alias, keyPassword==null ? null : keyPassword.toCharArray());
+                java.security.cert.Certificate cert = ks.getCertificate(alias);
+                PublicKey pub = cert.getPublicKey();
+                return new KeyPair(pub, (PrivateKey) key);
+            } catch (Exception ex) {
+                getLogger().warn("Unable to load keystore", ex);
+            }
+        }
         try {
             final Reader pemFileReader = new FileReader(pemFile);
             try {
@@ -242,4 +296,5 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
         }
         return buffer.toByteArray();
     }
+
 }

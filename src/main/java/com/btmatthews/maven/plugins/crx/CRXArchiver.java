@@ -55,4 +55,14 @@ public interface CRXArchiver extends Archiver {
      * @param helper The helper.
      */
     void setArchiveHelper(ArchiveHelper helper);
+
+    public void setAlias(String alias);
+
+    public void setStoreType(String storeType);
+
+    public void setKeyStore(File keyStore);
+
+    public void setKeyStorePass(String keyStorePassword);
+
+    public void setKeyPassword(String keyPassword);
 }
