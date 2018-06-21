@@ -52,8 +52,7 @@ public class CRXMojo extends AbstractMojo {
     private String storeType;
     @Parameter(defaultValue = "${crxKeyAlias}", required = false)
     private String alias;
-    @Parameter(defaultValue = "false", required = true)
-    private boolean skip;
+  
     
     @Parameter(defaultValue = "${crxKeyStore}", required=false)
     private File keyStore = null;
@@ -192,10 +191,6 @@ public class CRXMojo extends AbstractMojo {
      */
     public final void execute() throws MojoExecutionException, MojoFailureException {
 
-        if (skip) {
-            getLog().info("Skipping processing due to configuration");
-            return;
-        }
         // Make sure we have a manifest file for the CRX
 
         final File manifestFile = new File(crxSourceDirectory, "manifest.json");

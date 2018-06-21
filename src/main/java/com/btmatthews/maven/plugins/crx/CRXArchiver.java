@@ -56,13 +56,13 @@ public interface CRXArchiver extends Archiver {
      */
     void setArchiveHelper(ArchiveHelper helper);
 
-    public void setAlias(String alias);
+    void setAlias(String alias);
 
-    public void setStoreType(String storeType);
+    void setStoreType(String storeType);
 
-    public void setKeyStore(File keyStore);
+    void setKeyStore(File keyStore);
 
-    public void setKeyStorePass(String keyStorePassword);
+    void setKeyStorePass(String keyStorePassword);
 
-    public void setKeyPassword(String keyPassword);
+    void setKeyPassword(String keyPassword);
 }

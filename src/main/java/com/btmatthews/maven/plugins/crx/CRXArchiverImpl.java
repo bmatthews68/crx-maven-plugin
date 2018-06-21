@@ -13,7 +13,6 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package com.btmatthews.maven.plugins.crx;
 
 import java.io.ByteArrayOutputStream;
@@ -28,6 +27,7 @@ import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.zip.Deflater;
+import org.apache.commons.lang3.SystemUtils;
 
 import org.bouncycastle.asn1.pkcs.PrivateKeyInfo;
 import org.bouncycastle.jce.provider.BouncyCastleProvider;
@@ -77,9 +77,9 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     private File keyStore;
     private String keyStorePass;
     private String keyPassword;
-    
+
     public void setAlias(String alias) {
-        this.alias=alias;
+        this.alias = alias;
     }
 
     public void setStoreType(String storeType) {
@@ -97,9 +97,10 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     public void setKeyPassword(String keyPassword) {
         this.keyPassword = keyPassword;
     }
-    
+
     /**
-     * Used to inject the location of the .pem file containing the public/private key pair.
+     * Used to inject the location of the .pem file containing the
+     * public/private key pair.
      *
      * @param file The location of the .pem file.
      */
@@ -117,7 +118,8 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     }
 
     /**
-     * Used to inject the signature helper that is used to to sign the ZIP archive.
+     * Used to inject the signature helper that is used to to sign the ZIP
+     * archive.
      *
      * @param helper The helper.
      */
@@ -135,7 +137,8 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     }
 
     /**
-     * Overriding the implementation in {@link org.codehaus.plexus.archiver.zip.AbstractZipArchiver} to set the
+     * Overriding the implementation in
+     * {@link org.codehaus.plexus.archiver.zip.AbstractZipArchiver} to set the
      * packaging type to crx.
      *
      * @return Always returns {@code crx}.
@@ -146,8 +149,9 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     }
 
     /**
-     * Generate an in-memory ZIP file containing the resources for the Google Chrome Extension, then sign the ZIP
-     * and write out a CRX file containing the header, signature, public key and ZIP data.
+     * Generate an in-memory ZIP file containing the resources for the Google
+     * Chrome Extension, then sign the ZIP and write out a CRX file containing
+     * the header, signature, public key and ZIP data.
      */
     @Override
     protected void execute() {
@@ -156,17 +160,14 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
             Security.addProvider(new BouncyCastleProvider());
 
             // ZIP the CRX source directory tree
-
             final byte[] zipData = createZipFile();
 
             // Get the public/private key and sign the ZIP
-
             final KeyPair keyPair = getKeyPair();
             byte[] publicKey = keyPair.getPublic().getEncoded();
             byte[] signature = signatureHelper.sign(zipData, keyPair.getPrivate());
 
             // Write the CRX file
-
             final CRXArchive archive = new CRXArchive(publicKey, signature, zipData);
             archiveHelper.writeArchive(getDestFile(), archive);
         } catch (final GeneralSecurityException e) {
@@ -182,26 +183,72 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
      * @return The public/private key pair.
      */
     private KeyPair getKeyPair() {
-        if (alias!=null) {
-            try{
+
+        if (pemFile.exists()) {
+            try {
+                final Reader pemFileReader = new FileReader(pemFile);
+                try {
+                    final PEMParser pemParser = new PEMParser(pemFileReader);
+                    try {
+                        final Object pemObject = pemParser.readObject();
+                        if (pemObject instanceof KeyPair) {
+                            return (KeyPair) pemObject;
+                        } else if (pemObject instanceof PEMKeyPair) {
+                            final JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
+                            return converter.getKeyPair((PEMKeyPair) pemObject);
+                        } else if (pemObject instanceof PEMEncryptedKeyPair) {
+                            final JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
+                            final PEMEncryptedKeyPair encryptedKeyPair = (PEMEncryptedKeyPair) pemObject;
+                            final PEMDecryptorProvider decryptorProvider = new BcPEMDecryptorProvider(pemPassword.toCharArray());
+                            final PEMKeyPair pemKeyPair = encryptedKeyPair.decryptKeyPair(decryptorProvider);
+                            return converter.getKeyPair(pemKeyPair);
+                        } else if (pemObject instanceof PrivateKeyInfo) {
+                            final JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
+                            final PrivateKey privateKey = converter.getPrivateKey((PrivateKeyInfo) pemObject);
+                            return convertRSAPrivateCrtKey(privateKey);
+                        } else {
+                            return convertRSAPrivateCrtKey(pemObject);
+                        }
+                    } finally {
+                        pemParser.close();
+                    }
+                } finally {
+                    pemFileReader.close();
+                }
+            } catch (final InvalidKeySpecException e) {
+                throw new ArchiverException("Cannot generate RSA public key", e);
+            } catch (final NoSuchAlgorithmException e) {
+                throw new ArchiverException("RSA Private key algorithm is not supported", e);
+            } catch (final NoSuchProviderException e) {
+                throw new ArchiverException("Bouncy Castle not registered correctly", e);
+            } catch (final IOException e) {
+                throw new ArchiverException("Could not load the public/private key from the PEM file", e);
+            }
+        }
+
+        if (alias != null) {
+            try {
                 KeyStore ks = KeyStore.getInstance(storeType == null ? "JKS" : storeType);
-                if (keyStore!=null && keyStore.exists()) {
+                if (keyStore != null && keyStore.exists()) {
                     FileInputStream fis = null;
-                    try{
-                    fis = new FileInputStream(keyStore);
-                    ks.load(fis, keyStorePass==null ? null : keyStorePass.toCharArray());
-                    }catch (IOException e) {
+                    try {
+                        fis = new FileInputStream(keyStore);
+                        ks.load(fis, keyStorePass == null ? null : keyStorePass.toCharArray());
+                    } catch (IOException e) {
                         getLogger().warn("error trapped opening keystore, check password " + e.getMessage());
                     } finally {
-                        try{
-                        fis.close();
-                        }catch (IOException ex) {}
+                        try {
+                            fis.close();
+                        } catch (IOException ex) {
+                        }
                     }
                 } else {
-                    //null for input stream is OK for windows cert store and for macos keychain
-                    ks.load(null, keyStorePass==null ? null : keyStorePass.toCharArray());
+                    if (SystemUtils.IS_OS_WINDOWS || SystemUtils.IS_OS_MAC_OSX) {
+                        //null for input stream is OK for windows cert store and for macos keychain
+                        ks.load(null, keyStorePass == null ? null : keyStorePass.toCharArray());
+                    }
                 }
-                Key key = ks.getKey(alias, keyPassword==null ? null : keyPassword.toCharArray());
+                Key key = ks.getKey(alias, keyPassword == null ? null : keyPassword.toCharArray());
                 java.security.cert.Certificate cert = ks.getCertificate(alias);
                 PublicKey pub = cert.getPublicKey();
                 return new KeyPair(pub, (PrivateKey) key);
@@ -209,45 +256,7 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
                 getLogger().warn("Unable to load keystore", ex);
             }
         }
-        try {
-            final Reader pemFileReader = new FileReader(pemFile);
-            try {
-                final PEMParser pemParser = new PEMParser(pemFileReader);
-                try {
-                    final Object pemObject = pemParser.readObject();
-                    if (pemObject instanceof KeyPair) {
-                        return (KeyPair) pemObject;
-                    } else if (pemObject instanceof PEMKeyPair) {
-                        final JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
-                        return converter.getKeyPair((PEMKeyPair) pemObject);
-                    } else if (pemObject instanceof PEMEncryptedKeyPair) {
-                        final JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
-                        final PEMEncryptedKeyPair encryptedKeyPair = (PEMEncryptedKeyPair) pemObject;
-                        final PEMDecryptorProvider decryptorProvider = new BcPEMDecryptorProvider(pemPassword.toCharArray());
-                        final PEMKeyPair pemKeyPair = encryptedKeyPair.decryptKeyPair(decryptorProvider);
-                        return converter.getKeyPair(pemKeyPair);
-                    } else if (pemObject instanceof PrivateKeyInfo) {
-                        final JcaPEMKeyConverter converter = new JcaPEMKeyConverter().setProvider("BC");
-                        final PrivateKey privateKey = converter.getPrivateKey((PrivateKeyInfo) pemObject);
-                        return convertRSAPrivateCrtKey(privateKey);
-                    } else {
-                        return convertRSAPrivateCrtKey(pemObject);
-                    }
-                } finally {
-                    pemParser.close();
-                }
-            } finally {
-                pemFileReader.close();
-            }
-        } catch (final InvalidKeySpecException e) {
-            throw new ArchiverException("Cannot generate RSA public key", e);
-        } catch (final NoSuchAlgorithmException e) {
-            throw new ArchiverException("RSA Private key algorithm is not supported", e);
-        } catch (final NoSuchProviderException e) {
-            throw new ArchiverException("Bouncy Castle not registered correctly", e);
-        } catch (final IOException e) {
-            throw new ArchiverException("Could not load the public/private key from the PEM file", e);
-        }
+        throw new ArchiverException("Could not load the public/private key from the PEM, or any JKS stores");
     }
 
     /**
@@ -256,8 +265,10 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
      * @param pemObject Object loaded from PEM file.
      * @return The public/private key pair.
      * @throws NoSuchAlgorithmException If the RSA algorithm is not supported.
-     * @throws NoSuchProviderException  If the Bouncy Castle provider is not registered.
-     * @throws InvalidKeySpecException  If the key specification is not supported.
+     * @throws NoSuchProviderException If the Bouncy Castle provider is not
+     * registered.
+     * @throws InvalidKeySpecException If the key specification is not
+     * supported.
      */
     private KeyPair convertRSAPrivateCrtKey(final Object pemObject)
             throws NoSuchAlgorithmException, NoSuchProviderException, InvalidKeySpecException {
@@ -277,11 +288,13 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
     /**
      * Create a ZIP file in memory containing the directory tree leveraging the {@link
      * org.codehaus.plexus.archiver.zip.AbstractZipArchiver#addResources(org.codehaus.plexus.archiver.ResourceIterator,
-     * org.codehaus.plexus.archiver.zip.ZipOutputStream)} method to store resources in the ZIP file. The ZIP file is
-     * then converted to a byte array.
+     * org.codehaus.plexus.archiver.zip.ZipOutputStream)} method to store
+     * resources in the ZIP file. The ZIP file is then converted to a byte
+     * array.
      *
      * @return A byte array containing the ZIP file.
-     * @throws java.io.IOException If there was an error reading the contents of the source directory.
+     * @throws java.io.IOException If there was an error reading the contents of
+     * the source directory.
      */
     private byte[] createZipFile() throws IOException {
         final ByteArrayOutputStream buffer = new ByteArrayOutputStream();
