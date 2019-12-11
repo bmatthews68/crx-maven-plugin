@@ -184,7 +184,7 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
      */
     private KeyPair getKeyPair() {
 
-        if (pemFile.exists()) {
+        if (pemFile!=null && pemFile.exists()) {
             try {
                 final Reader pemFileReader = new FileReader(pemFile);
                 try {
