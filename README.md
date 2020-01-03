@@ -39,11 +39,56 @@ Defining **crxPEMFile** and **crxPEMPassword** as global properties in the userâ
       <properties>
         <crxPEMFile>${user.home}/crx.pem</crxPEMFile>
         <crxPEMPassword>SparkleAndFade</crxPEMPassword>
+        <!-- OR -->
+        <crxKeyStore>path/to/keystore.jks</crxKeyStore> <!-- can be null-->
+        <crxKeyStorePassword>changeit</crxKeyStorePassword>
+        <crxKeyPassword>changeit</crxKeyPassword>
+        <crxKeyAlias>myKey</crxKeyAlias>
+        <crxStoreType>JKS</crxStoreType>
       </properties>
     </profile>
   </profiles>
 </settings>
 ```
+
+Example using a smartcard accessible via Windows
+
+```xml
+<settings>
+  <profiles>
+    <profile>
+      <id>crx</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <crxKeyAlias>CN=first.last, DC=my organiztion</crxKeyAlias>
+        <crxStoreType>Windows-MY</crxStoreType>
+      </properties>
+    </profile>
+  </profiles>
+</settings>
+```
+
+Example using MacOS's Keychain
+
+```xml
+<settings>
+  <profiles>
+    <profile>
+      <id>crx</id>
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
+      <properties>
+        <crxKeyAlias>CN=first.last, DC=my organiztion</crxKeyAlias>
+        <crxStoreType>KeychainStore</crxStoreType>
+      </properties>
+    </profile>
+  </profiles>
+</settings>
+```
+
 Furthermore, it is possible to avoid storing the password in plain text in the **settings.xml** file. See the
 [Password Encryption](http://maven.apache.org/guides/mini/guide-encryption.html) guide on the Maven site.
 
