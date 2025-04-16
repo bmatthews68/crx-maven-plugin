@@ -10,7 +10,7 @@ packages them into a signed [CRX](http://code.google.com/chrome/extensions/crx.h
 There are two ways to use the **CRX Maven Plugin**:
 
 * Use the **crx** packaging type when the primary artifact produced by the project is the CRX archive
-* The [crx:crx](http://crx-maven-plugin.btmatthews.com/crx-mojo.html) goal when the CRX archive is not the primary
+* The [crx:crx](https://www.buralotech.com/crx-maven-plugin/crx-mojo.html) goal when the CRX archive is not the primary
 artifact produced by the build.
 
 Signature
@@ -58,9 +58,9 @@ approach is not recommended because it means specifying the password in plain te
   <build>
     <plugins>
       <plugin>
-        <groupId>com.btmatthews.maven.plugins</groupId>
+        <groupId>com.buralotech.oss.maven.plugins</groupId>
         <artifactId>crx-maven-plugin</artifactId>
-        <version>1.0.0</version>
+        <version>2.0.0</version>
         <configuration>
           <crxPEMFile>${user.home}/crx.pem</crxPEMFile>
           <crxPEMPassword>SparkleAndFade</crxPEMPassword>
@@ -137,16 +137,16 @@ The **pom.xml** should be as follows:
 
 ```xml
 <project>
-    <groupId>com.btmatthews.crx</groupId>
+    <groupId>com.buralotech.oss.crx</groupId>
     <artifactId>HelloWorld</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>crx</packaging>
     <build>
         <plugins>
             <plugin>
-                <groupId>com.btmatthews.maven.plugins</groupId>
+                <groupId>com.buralotech.oss.maven.plugins</groupId>
                 <artifactId>crx-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>2.0.0</version>
                 <extensions>true</extensions>
             </plugin>
         </plugins>
@@ -191,16 +191,16 @@ The **pom.xml** should be similar to the following:
 
 ```xml
 <project>
-    <groupId>com.btmatthews.crx</groupId>
+    <groupId>com.buralotech.oss.crx</groupId>
     <artifactId>HelloWorld</artifactId>
     <version>1.0.0-SNAPSHOT</version>
     <packaging>crx</packaging>
     <build>
         <plugins>
             <plugin>
-                <groupId>com.btmatthews.maven.plugins</groupId>
+                <groupId>com.buralotech.oss.maven.plugins</groupId>
                 <artifactId>crx-maven-plugin</artifactId>
-                <version>1.0.0</version>
+                <version>2.0.0</version>
                 <extensions>true</extensions>
             </plugin>
         </plugins>
@@ -220,10 +220,10 @@ The **CRX Maven Plugin** has been published in [Maven Central](http://search.mav
 
 ```xml
 <plugin>
-    <groupId>com.btmatthews.maven.plugins</groupId>
+    <groupId>com.buralotech.oss.maven.plugins</groupId>
     <artifactId>crx-maven-plugin</artifactId>
-    <version>1.2.1</version>
-</plugin
+    <version>2.0.0</version>
+</plugin>
 ```
 
 License & Source Code

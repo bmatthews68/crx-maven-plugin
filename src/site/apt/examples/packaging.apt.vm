@@ -43,7 +43,7 @@ HelloWorld
 
 +---------------------------------------+
 <project>
-  <groupId>com.btmatthews.crx</groupId>
+  <groupId>com.buralotech.crx</groupId>
   <artifactId>HelloWord</artifactId>
   <version>1.0.0-SNAPSHOT</version>
   <packaging>crx</packaging>

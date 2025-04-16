@@ -21,10 +21,9 @@
         http://maven.apache.org/DECORATION/1.1.0
         http://maven.apache.org/xsd/decoration-1.1.0.xsd"
     name="CRX Maven Plugin">
-    <googleAnalyticsAccountId>UA-5713196-12</googleAnalyticsAccountId>
     <bannerLeft>
         <name>CRX Maven Plugin</name>
-        <href>http://crx-maven-plugin.btmatthews.com</href>
+        <href>https://www.buralotech.com/crx-maven-plugin/index.html</href>
     </bannerLeft>
     <publishDate format="dd MMM yyyy" position="left"/>
     <version position="left"/>

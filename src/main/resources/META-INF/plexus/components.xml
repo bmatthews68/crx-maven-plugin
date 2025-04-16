@@ -6,8 +6,8 @@
             <implementation>org.apache.maven.lifecycle.mapping.DefaultLifecycleMapping</implementation>
             <configuration>
                 <phases>
-                    <package>com.btmatthews.maven.plugins:crx-maven-plugin:crx</package>
-                    <verify>com.btmatthews.maven.plugins:crx-maven-plugin:crx-verify</verify>
+                    <package>com.buralotech.oss.maven.plugins:crx-maven-plugin:crx</package>
+                    <verify>com.buralotech.oss.maven.plugins:crx-maven-plugin:crx-verify</verify>
                     <install>org.apache.maven.plugins:maven-install-plugin:install</install>
                     <deploy>org.apache.maven.plugins:maven-deploy-plugin:deploy</deploy>
                 </phases>
@@ -28,32 +28,32 @@
             </configuration>
         </component>
         <component>
-            <role>com.btmatthews.maven.plugins.crx.CRXArchiver</role>
+            <role>com.buralotech.oss.maven.plugins.crx.CRXArchiver</role>
             <role-hint>crx</role-hint>
-            <implementation>com.btmatthews.maven.plugins.crx.CRXArchiverImpl</implementation>
+            <implementation>com.buralotech.oss.maven.plugins.crx.CRXArchiverImpl</implementation>
             <instantiation-strategy>per-lookup</instantiation-strategy>
             <requirements>
                 <requirement>
-                    <role>com.btmatthews.maven.plugins.crx.ArchiveHelper</role>
+                    <role>com.buralotech.oss.maven.plugins.crx.ArchiveHelper</role>
                     <role-hint>crx</role-hint>
                     <field>archiveHelper</field>
                 </requirement>
                 <requirement>
-                    <role>com.btmatthews.maven.plugins.crx.SignatureHelper</role>
+                    <role>com.buralotech.oss.maven.plugins.crx.SignatureHelper</role>
                     <role-hint>crx</role-hint>
                     <field>signatureHelper</field>
                 </requirement>
             </requirements>
         </component>
         <component>
-            <role>com.btmatthews.maven.plugins.crx.ArchiveHelper</role>
+            <role>com.buralotech.oss.maven.plugins.crx.ArchiveHelper</role>
             <role-hint>crx</role-hint>
-            <implementation>com.btmatthews.maven.plugins.crx.CRXArchiveHelper</implementation>
+            <implementation>com.buralotech.oss.maven.plugins.crx.CRXArchiveHelper</implementation>
         </component>
         <component>
-            <role>com.btmatthews.maven.plugins.crx.SignatureHelper</role>
+            <role>com.buralotech.oss.maven.plugins.crx.SignatureHelper</role>
             <role-hint>crx</role-hint>
-            <implementation>com.btmatthews.maven.plugins.crx.CRXSignatureHelper</implementation>
+            <implementation>com.buralotech.oss.maven.plugins.crx.CRXSignatureHelper</implementation>
         </component>
     </components>
 </component-set>
