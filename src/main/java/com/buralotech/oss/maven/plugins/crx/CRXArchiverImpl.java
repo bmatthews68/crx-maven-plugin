@@ -60,6 +60,8 @@ import javax.inject.Inject;
  */
 public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver {
 
+    private int version = 3;
+
     /**
      * The location of the .pem file containing the public/private key pair.
      */
@@ -81,6 +83,10 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
      */
     @Inject
     private ArchiveHelper archiveHelper;
+
+    public void setVersion(final int version) {
+        this.version = version;
+    }
 
     /**
      * Used to inject the location of the .pem file containing the public/private key pair.
@@ -152,7 +158,7 @@ public class CRXArchiverImpl extends AbstractZipArchiver implements CRXArchiver 
             // Write the CRX file
 
             final CRXArchive archive = new CRXArchive(publicKey, signature, zipData);
-            archiveHelper.writeArchive(getDestFile(), archive);
+            archiveHelper.writeArchive(getDestFile(), version, archive);
         } catch (final GeneralSecurityException e) {
             throw new ArchiverException("Could not generate the signature for the CRX file", e);
         } catch (final IOException e) {

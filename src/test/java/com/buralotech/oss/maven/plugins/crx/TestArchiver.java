@@ -29,6 +29,7 @@ import java.security.PrivateKey;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.Mockito.any;
 import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
@@ -175,7 +176,7 @@ class TestArchiver {
     @Test
     void testArchiverWhenArchiveHelperFails() throws Exception {
         final ArchiveHelper helper = mock(ArchiveHelper.class);
-        doThrow(IOException.class).when(helper).writeArchive(any(File.class), any(CRXArchive.class));
+        doThrow(IOException.class).when(helper).writeArchive(any(File.class), anyInt(), any(CRXArchive.class));
         archiver.setPemFile(new File("target/test-classes/crxtest.pem"));
         archiver.addDirectory(new File("target/test-classes/HelloWorld"), null, null);
         archiver.setArchiveHelper(helper);

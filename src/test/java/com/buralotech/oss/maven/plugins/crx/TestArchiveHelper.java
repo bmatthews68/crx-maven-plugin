@@ -55,7 +55,7 @@ class TestArchiveHelper {
     void testReadWrite(@TempDir File outputDirectory) throws Exception {
         final File crxFile = new File(outputDirectory, "HelloWorld-1.0.0-SNAPSHOT.crx");
         final CRXArchive crxOutArchive = new DummyArchive();
-        archiveHelper.writeArchive(crxFile, crxOutArchive);
+        archiveHelper.writeArchive(crxFile, 2, crxOutArchive);
         final CRXArchive crxInArchive = archiveHelper.readArchive(crxFile);
         assertNotNull(crxInArchive);
         assertArrayEquals(DummyArchive.PUBLIC_KEY, crxInArchive.getPublicKey());

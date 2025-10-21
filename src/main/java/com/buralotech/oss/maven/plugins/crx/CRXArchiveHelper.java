@@ -16,12 +16,9 @@
 
 package com.buralotech.oss.maven.plugins.crx;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
+import java.nio.file.Files;
+import java.util.Arrays;
 
 /**
  * Implementation of {@link ArchiveHelper} that outputs the CRX archive.
@@ -53,21 +50,30 @@ public class CRXArchiveHelper implements ArchiveHelper {
     /**
      * The magic number for CRX files.
      */
-    private static final byte[] CRX_MAGIC = { 0x43, 0x72, 0x32, 0x34 };
+    private static final byte[] CRX_MAGIC = {0x43, 0x72, 0x32, 0x34};
 
     /**
      * The CRX header version number in little endian format.
      */
-    private static final byte[] CRX_VERSION = { 0x02, 0x00, 0x00, 0x00 };
+    private static final byte[] CRX2_VERSION = {0x02, 0x00, 0x00, 0x00};
+
+    /**
+     * The CRX header version number in little endian format.
+     */
+    private static final byte[] CRX3_VERSION = {0x03, 0x00, 0x00, 0x00};
 
     /**
      * Generate the CRX file writing the header, public key, signature and data.
      *
      * @param crxFile    The target CRX file.
+     * @param version    The version.
      * @param crxArchive The CRX archive.
      * @throws IOException If there was an error writing the CRX file.
      */
-    public void writeArchive(final File crxFile, final CRXArchive crxArchive) throws IOException {
+    public void writeArchive(final File crxFile,
+                             final int version,
+                             final CRXArchive crxArchive)
+            throws IOException {
         if (crxFile.exists()) {
             crxFile.delete();
         } else {
@@ -75,12 +81,17 @@ public class CRXArchiveHelper implements ArchiveHelper {
         }
         try (FileOutputStream crx = new FileOutputStream(crxFile)) {
             crx.write(CRX_MAGIC);
-            crx.write(CRX_VERSION);
-            writeLength(crx, crxArchive.getPublicKey().length);
-            writeLength(crx, crxArchive.getSignature().length);
-            crx.write(crxArchive.getPublicKey());
-            crx.write(crxArchive.getSignature());
-            crx.write(crxArchive.getData());
+            if (version == 2) {
+                crx.write(CRX2_VERSION);
+                writeLength(crx, crxArchive.getPublicKey().length);
+                writeLength(crx, crxArchive.getSignature().length);
+                crx.write(crxArchive.getPublicKey());
+                crx.write(crxArchive.getSignature());
+                crx.write(crxArchive.getData());
+            } else if (version == 3) {
+                crx.write(CRX3_VERSION);
+                // TODO
+            }
         }
     }
 
@@ -93,19 +104,26 @@ public class CRXArchiveHelper implements ArchiveHelper {
      */
     public CRXArchive readArchive(final File crxFile) throws IOException {
         final byte[] buffer = new byte[4];
-        try (InputStream crxIn = new FileInputStream(crxFile)) {
+        try (InputStream crxIn = Files.newInputStream(crxFile.toPath())) {
             crxIn.read(buffer);
             crxIn.read(buffer);
-            final int publicKeyLength = readLength(crxIn);
-            final int signatureLength = readLength(crxIn);
-            final byte[] publicKey = new byte[publicKeyLength];
-            crxIn.read(publicKey);
-            final byte[] signature = new byte[signatureLength];
-            crxIn.read(signature);
-            final int dataLength = (int)(crxFile.length() - 16 - publicKeyLength - signatureLength);
-            final byte[] data = new byte[dataLength];
-            crxIn.read(data);
-            return new CRXArchive(publicKey, signature, data);
+            if (Arrays.equals(buffer, CRX2_VERSION)) {
+                final int publicKeyLength = readLength(crxIn);
+                final int signatureLength = readLength(crxIn);
+                final byte[] publicKey = new byte[publicKeyLength];
+                crxIn.read(publicKey);
+                final byte[] signature = new byte[signatureLength];
+                crxIn.read(signature);
+                final int dataLength = (int) (crxFile.length() - 16 - publicKeyLength - signatureLength);
+                final byte[] data = new byte[dataLength];
+                crxIn.read(data);
+                return new CRXArchive(publicKey, signature, data);
+            } else if (Arrays.equals(buffer, CRX3_VERSION)) {
+                // TODO
+                throw new IOException("Version 3 fully not supported");
+            } else {
+                throw new IOException("Version not supported");
+            }
         }
     }
 

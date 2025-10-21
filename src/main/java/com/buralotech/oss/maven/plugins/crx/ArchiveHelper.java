@@ -31,10 +31,11 @@ public interface ArchiveHelper {
      * Generate the CRX file writing the header, public key, signature and data.
      *
      * @param crxFile    The target CRX file.
+     * @param version    The version.
      * @param crxArchive The CRX archive.
      * @throws IOException If there was an error writing the CRX file.
      */
-    void writeArchive(File crxFile, CRXArchive crxArchive) throws IOException;
+    void writeArchive(File crxFile, int version, CRXArchive crxArchive) throws IOException;
 
     /**
      * Read the CRX archive from a file loading the header, public key, signature and data.
